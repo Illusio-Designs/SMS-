@@ -14,7 +14,7 @@ export default function DashboardPage() {
   return (
     <div className="page">
       <div className="page-head">
-        <h2>Welcome back, {currentUser.name.split(' ')[0]} 👋</h2>
+        <h2 className="row" style={{ gap: 8 }}>Welcome back, {currentUser.name.split(' ')[0]} <Glyph name="sun" size={22} color="var(--amber)" /></h2>
         <p className="muted">{greeting(role)}</p>
       </div>
       {role === 'admin' && <AdminDash />}

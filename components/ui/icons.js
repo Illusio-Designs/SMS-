@@ -58,6 +58,21 @@ import {
   Wallet01Icon,
   Invoice01Icon,
   FavouriteIcon,
+  GridViewIcon,
+  CheckmarkSquare01Icon,
+  Cancel01Icon,
+  Mail01Icon,
+  WhatsappIcon,
+  SmartPhone01Icon,
+  Pin02Icon,
+  Coffee02Icon,
+  Restaurant01Icon,
+  Dish01Icon,
+  ArrowUp01Icon,
+  ArrowDown01Icon,
+  Image01Icon,
+  PaintBoardIcon,
+  CloudUploadIcon,
 } from '@hugeicons/core-free-icons'
 
 export const ICON = {
@@ -77,6 +92,7 @@ export const ICON = {
   analytics: Analytics01Icon,
   communication: Message02Icon,
   settings: Settings02Icon,
+  features: GridViewIcon,
 
   // roles
   admin: Shield01Icon,
@@ -117,6 +133,20 @@ export const ICON = {
   home: Home01Icon,
   alert: Alert01Icon,
   heart: FavouriteIcon,
+  check: CheckmarkSquare01Icon,
+  cross: Cancel01Icon,
+  whatsapp: WhatsappIcon,
+  mail: Mail01Icon,
+  sms: SmartPhone01Icon,
+  pin: Pin02Icon,
+  breakfast: Coffee02Icon,
+  lunch: Restaurant01Icon,
+  dinner: Dish01Icon,
+  arrowUp: ArrowUp01Icon,
+  arrowDown: ArrowDown01Icon,
+  image: Image01Icon,
+  palette: PaintBoardIcon,
+  upload: CloudUploadIcon,
 
   // actions
   search: Search01Icon,

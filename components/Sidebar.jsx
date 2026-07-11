@@ -9,13 +9,17 @@ import { Glyph } from '@/components/ui'
 
 export default function Sidebar({ open, onNavigate }) {
   const pathname = usePathname()
-  const { role } = useApp()
+  const { role, logo } = useApp()
   const groups = groupedNavForRole(role)
 
   return (
     <aside className={`sidebar ${open ? 'open' : ''}`}>
       <div className="sidebar__brand">
-        <span className="logo"><Glyph name="school" size={20} color="#fff" strokeWidth={2} /></span>
+        <span className="logo">
+          {logo
+            ? <img src={logo} alt="School logo" />
+            : <Glyph name="school" size={20} color="#fff" strokeWidth={2} />}
+        </span>
         <span>
           Illusio SMS
           <small>{school.name}</small>

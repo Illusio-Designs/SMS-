@@ -11,7 +11,7 @@ const ROLES = ['admin', 'teacher', 'student', 'parent']
 
 export default function LoginPage() {
   const router = useRouter()
-  const { setRole } = useApp()
+  const { setRole, logo } = useApp()
   const [picked, setPicked] = useState('admin')
 
   const signIn = (e) => {
@@ -24,7 +24,9 @@ export default function LoginPage() {
     <div className="login-wrap">
       <div className="login-card">
         <div className="login-brand">
-          <span className="login-logo"><Glyph name="school" size={26} color="#fff" strokeWidth={2} /></span>
+          <span className="login-logo">
+            {logo ? <img src={logo} alt="School logo" /> : <Glyph name="school" size={26} color="#fff" strokeWidth={2} />}
+          </span>
           <div>
             <b>Illusio SMS</b>
             <div className="muted" style={{ fontSize: 12.5 }}>{school.name} · {school.board}</div>
@@ -69,7 +71,8 @@ export default function LoginPage() {
       <style jsx>{`
         .login-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; justify-content: center; }
         .login-brand b { font-size: 17px; }
-        .login-logo { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), #7c74f0); display: grid; place-items: center; }
+        .login-logo { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), #7c74f0); display: grid; place-items: center; overflow: hidden; }
+        .login-logo :global(img) { width: 100%; height: 100%; object-fit: cover; }
         .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .role-tile { display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 14px 8px; border: 1px solid var(--border); border-radius: 11px; background: var(--surface); font-weight: 600; font-size: 13px; color: var(--text-soft); }
         .role-tile.on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }

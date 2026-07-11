@@ -14,6 +14,7 @@ switcher (top bar + login), per-role grouped navigation and per-role dashboards.
 | Module | Roles | Highlights |
 |---|---|---|
 | **Dashboard** | all | Role-aware KPIs, charts, action items |
+| **Features** | all | Role × feature **access matrix** + per-role feature views |
 | **Students (SIS)** | admin, teacher | Searchable roster + full record pages |
 | **Attendance** | all | Interactive roll-call, reports, leave approvals, history |
 | **Gradebook & Exams** | all | CBSE gradebook + CCE report card |
@@ -22,16 +23,22 @@ switcher (top bar + login), per-role grouped navigation and per-role dashboards.
 | **Admissions** | admin | Applicant funnel (Kanban) |
 | **Fees** | admin, parent | Reports + parent pay-online (mock Razorpay) |
 | **Library** | admin, teacher, student | Catalog + circulation |
-| **Transport** | admin, parent | Routes/occupancy + live bus tracking (parent) |
+| **Transport** | admin, parent | Routes/occupancy + **animated live bus tracking** with route timeline & ETA (parent) |
 | **Hostel** | admin | Room occupancy + mess menu |
 | **HR & Payroll** | admin | Staff directory + payroll runs |
 | **Analytics & AI** | admin | Trends, subject mastery, AI insights, at-risk detection |
 | **Communication** | all | Announcements, messages, calendar |
-| **Settings** | admin | School config, RBAC matrix, users, integrations |
+| **Settings** | admin | **Branding (logo upload + accent-colour picker)**, school config, RBAC matrix, users, integrations |
 | **Login** | — | Portal picker, Google sign-in, MFA note |
 
-India context throughout: CBSE grading, ₹/INR, DPDP consent & data-residency,
-Razorpay, WhatsApp/SMS channels. Fully responsive (collapsible mobile sidebar).
+Admins can **upload a school logo and choose an accent colour** in
+*Settings → Branding & Theme* — it applies across the whole app instantly and
+persists (sidebar, login, buttons, icons, charts).
+
+Every icon in the app is a **HugeIcons** glyph (no emoji), routed through a
+single semantic registry. India context throughout: CBSE grading, ₹/INR, DPDP
+consent & data-residency, Razorpay, WhatsApp/SMS channels. Fully responsive
+(collapsible mobile sidebar).
 
 ## Shared component library
 

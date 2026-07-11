@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useApp } from '@/components/AppContext'
-import { Card, Badge, Kpi, Bar } from '@/components/ui'
+import { Card, Badge, Kpi, Bar, Glyph } from '@/components/ui'
 import { todayAttendance, leaveRequests, attendanceTrend, findStudent } from '@/lib/mockData'
 
 export default function AttendancePage() {
@@ -90,9 +90,12 @@ function TeacherAttendance() {
       </Card>
 
       {saved && (
-        <div className="card" style={{ padding: 14, borderColor: 'var(--green)', background: 'var(--green-soft)' }}>
-          <b style={{ color: 'var(--green)' }}>✔ Attendance saved.</b>{' '}
-          <span className="muted">Absence notifications queued to parents via WhatsApp/SMS (demo).</span>
+        <div className="card row" style={{ padding: 14, borderColor: 'var(--green)', background: 'var(--green-soft)', gap: 10 }}>
+          <Glyph name="check" size={20} color="var(--green)" />
+          <span>
+            <b style={{ color: 'var(--green)' }}>Attendance saved.</b>{' '}
+            <span className="muted">Absence notifications queued to parents via WhatsApp/SMS (demo).</span>
+          </span>
         </div>
       )}
 

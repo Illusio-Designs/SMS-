@@ -1,6 +1,6 @@
 'use client'
 
-import { PageHeader, Card, Badge, Kpi, Button, Table, Bar } from '@/components/ui'
+import { PageHeader, Card, Badge, Kpi, Button, Table, Bar, Glyph } from '@/components/ui'
 import { hostelSummary, hostelRooms, messMenu } from '@/lib/mockData'
 
 export default function HostelPage() {
@@ -45,9 +45,9 @@ export default function HostelPage() {
             {messMenu.map((m) => (
               <div key={m.day} className="menu-day">
                 <b>{m.day}</b>
-                <div className="muted" style={{ fontSize: 12.5 }}>🍳 {m.breakfast}</div>
-                <div className="muted" style={{ fontSize: 12.5 }}>🍛 {m.lunch}</div>
-                <div className="muted" style={{ fontSize: 12.5 }}>🍽 {m.dinner}</div>
+                <div className="muted row" style={{ fontSize: 12.5, gap: 7 }}><Glyph name="breakfast" size={15} color="var(--amber)" /> {m.breakfast}</div>
+                <div className="muted row" style={{ fontSize: 12.5, gap: 7 }}><Glyph name="lunch" size={15} color="var(--green)" /> {m.lunch}</div>
+                <div className="muted row" style={{ fontSize: 12.5, gap: 7 }}><Glyph name="dinner" size={15} color="var(--blue)" /> {m.dinner}</div>
               </div>
             ))}
           </div>

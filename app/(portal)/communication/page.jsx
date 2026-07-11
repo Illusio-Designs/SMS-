@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useApp } from '@/components/AppContext'
-import { Card, Badge } from '@/components/ui'
+import { Card, Badge, Glyph } from '@/components/ui'
 import { announcements, messages, events } from '@/lib/mockData'
 
 export default function CommunicationPage() {
@@ -41,9 +41,9 @@ export default function CommunicationPage() {
               </div>
               <div className="between">
                 <div className="pillrow">
-                  <span className="pill">📱 WhatsApp</span>
-                  <span className="pill">✉ Email</span>
-                  <span className="pill">💬 SMS</span>
+                  <span className="pill row" style={{ gap: 6 }}><Glyph name="whatsapp" size={14} /> WhatsApp</span>
+                  <span className="pill row" style={{ gap: 6 }}><Glyph name="mail" size={14} /> Email</span>
+                  <span className="pill row" style={{ gap: 6 }}><Glyph name="sms" size={14} /> SMS</span>
                 </div>
                 <button className="btn primary" onClick={post}>Publish</button>
               </div>
@@ -55,7 +55,7 @@ export default function CommunicationPage() {
               {list.map((a) => (
                 <div key={a.id} className="ann">
                   <div className="between">
-                    <b>{a.pinned ? '📌 ' : ''}{a.title}</b>
+                    <b className="row" style={{ gap: 6 }}>{a.pinned && <Glyph name="pin" size={15} color="var(--accent)" />}{a.title}</b>
                     <span className="faint" style={{ fontSize: 12 }}>{a.at}</span>
                   </div>
                   <p className="muted" style={{ fontSize: 13, margin: '4px 0 8px' }}>{a.body}</p>
