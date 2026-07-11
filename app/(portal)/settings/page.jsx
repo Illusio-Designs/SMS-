@@ -1,8 +1,9 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { PageHeader, Card, Badge, Button, Table, Tabs, Avatar, Icon, Glyph } from '@/components/ui'
-import { useApp, DEFAULT_ACCENT } from '@/components/AppContext'
+import { useApp } from '@/components/AppContext'
+import { extractPalette } from '@/lib/colorExtract'
 import { schoolConfig, rolePermissions, staffUsers, integrations } from '@/lib/mockData'
 
 export default function SettingsPage() {
@@ -28,12 +29,24 @@ export default function SettingsPage() {
   )
 }
 
-const SWATCHES = ['#4f46e5', '#0d9488', '#db2777', '#d97706', '#2563eb', '#7c3aed', '#dc2626', '#059669', '#0891b2', '#e11d48']
-
 function Branding() {
-  const { accent, setAccent, logo, setLogo, resetTheme } = useApp()
+  const { accent, accent2, setAccent, setBrand, logo, setLogo, resetTheme } = useApp()
   const fileRef = useRef(null)
   const [error, setError] = useState('')
+  const [palette, setPalette] = useState([])
+  const [busy, setBusy] = useState(false)
+
+  // Pull a colour palette out of whatever logo is set (on mount / change).
+  useEffect(() => {
+    let cancelled = false
+    if (!logo) { setPalette([]); return }
+    setBusy(true)
+    extractPalette(logo, 5)
+      .then((cols) => { if (!cancelled) setPalette(cols) })
+      .catch(() => { if (!cancelled) setPalette([]) })
+      .finally(() => { if (!cancelled) setBusy(false) })
+    return () => { cancelled = true }
+  }, [logo])
 
   const onFile = (e) => {
     const file = e.target.files?.[0]
@@ -42,44 +55,72 @@ function Branding() {
     if (file.size > 1024 * 1024) { setError('Image must be under 1 MB.'); return }
     setError('')
     const reader = new FileReader()
-    reader.onload = () => setLogo(reader.result)
+    reader.onload = async () => {
+      const url = reader.result
+      setLogo(url)
+      // Auto-apply the two most prominent logo colours as the brand theme.
+      try {
+        const cols = await extractPalette(url, 5)
+        if (cols.length) setBrand(cols[0], cols[1] || undefined)
+      } catch { /* keep current theme */ }
+    }
     reader.readAsDataURL(file)
   }
 
   return (
     <div className="grid cols-2">
-      <Card title="School logo" subtitle="Shown in the sidebar and on the sign-in screen.">
+      <Card title="School logo" subtitle="Upload your logo — the app palette is generated from it.">
         <div className="row" style={{ gap: 16, alignItems: 'center' }}>
           <div className="logo-preview">
             {logo ? <img src={logo} alt="Logo preview" /> : <Glyph name="school" size={30} color="#fff" strokeWidth={2} />}
           </div>
           <div className="stack" style={{ gap: 8 }}>
             <input ref={fileRef} type="file" accept="image/*" onChange={onFile} style={{ display: 'none' }} />
-            <Button variant="primary" icon="upload" onClick={() => fileRef.current?.click()}>Upload logo</Button>
-            {logo && <Button size="sm" icon="cross" onClick={() => setLogo(null)}>Remove</Button>}
+            <Button variant="primary" icon="upload" onClick={() => fileRef.current?.click()}>
+              {logo ? 'Replace logo' : 'Upload logo'}
+            </Button>
+            {logo && <Button size="sm" icon="cross" onClick={() => { setLogo(null); resetTheme() }}>Remove</Button>}
           </div>
         </div>
         {error && <p style={{ color: 'var(--red)', fontSize: 12.5, marginTop: 10 }}>{error}</p>}
         <p className="faint" style={{ fontSize: 11.5, marginTop: 12 }}>PNG, JPG or SVG · square works best · max 1 MB.</p>
       </Card>
 
-      <Card title="Accent colour" subtitle="Applies across the whole app instantly.">
-        <div className="swatches">
-          {SWATCHES.map((c) => (
-            <button key={c} className={`swatch ${accent.toLowerCase() === c ? 'on' : ''}`}
-              style={{ background: c }} onClick={() => setAccent(c)} aria-label={c}>
-              {accent.toLowerCase() === c && <Glyph name="check" size={16} color="#fff" />}
-            </button>
-          ))}
-        </div>
-        <div className="row" style={{ marginTop: 16, gap: 12 }}>
-          <label className="row" style={{ gap: 8, fontSize: 13, fontWeight: 600 }}>
-            <input type="color" value={accent} onChange={(e) => setAccent(e.target.value)} className="color-input" />
-            Custom
-          </label>
-          <span className="mono muted" style={{ fontSize: 13 }}>{accent.toUpperCase()}</span>
+      <Card title="Brand colours" subtitle="Extracted from your logo — pick the primary.">
+        {logo ? (
+          <>
+            {busy && <p className="muted" style={{ fontSize: 13 }}>Reading colours from logo…</p>}
+            {!busy && palette.length > 0 && (
+              <>
+                <div className="swatches">
+                  {palette.map((c) => (
+                    <button key={c} className={`swatch ${accent.toLowerCase() === c.toLowerCase() ? 'on' : ''}`}
+                      style={{ background: c }} onClick={() => setAccent(c)} aria-label={c} title={c.toUpperCase()}>
+                      {accent.toLowerCase() === c.toLowerCase() && <Glyph name="check" size={16} color="#fff" />}
+                    </button>
+                  ))}
+                </div>
+                <p className="faint" style={{ fontSize: 11.5, marginTop: 10 }}>Tap a colour to use it as the primary theme colour.</p>
+              </>
+            )}
+            {!busy && palette.length === 0 && (
+              <p className="muted" style={{ fontSize: 13 }}>Couldn’t read colours from this logo. Using default theme.</p>
+            )}
+          </>
+        ) : (
+          <div className="empty" style={{ padding: 18 }}>
+            <Icon name="palette" tone="gray" size="md" />
+            <b style={{ fontSize: 14 }}>No logo yet</b>
+            <span className="muted" style={{ fontSize: 12.5 }}>Upload a logo and its colours appear here automatically.</span>
+          </div>
+        )}
+
+        <div className="brand-active">
+          <span className="ba-label">Active theme</span>
+          <span className="ba-grad" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-2))' }} />
+          <span className="mono muted" style={{ fontSize: 12 }}>{accent.toUpperCase()} → {accent2.toUpperCase()}</span>
           <div className="topbar__spacer" />
-          <Button size="sm" onClick={resetTheme}>Reset to default</Button>
+          <Button size="sm" onClick={resetTheme}>Reset</Button>
         </div>
 
         <div className="theme-preview">
@@ -87,7 +128,7 @@ function Branding() {
             <Icon name="dashboard" tone="accent" size="md" />
             <div style={{ flex: 1 }}>
               <b style={{ fontSize: 13 }}>Live preview</b>
-              <div className="faint" style={{ fontSize: 11.5 }}>Buttons, icons and highlights use this colour.</div>
+              <div className="faint" style={{ fontSize: 11.5 }}>Sidebar, buttons, icons and charts use these colours.</div>
             </div>
             <button className="btn primary sm">Primary</button>
           </div>
@@ -96,14 +137,16 @@ function Branding() {
 
       <style jsx>{`
         .logo-preview { width: 66px; height: 66px; border-radius: 14px; overflow: hidden; flex: 0 0 auto;
-          display: grid; place-items: center; background: linear-gradient(135deg, var(--accent), #7c74f0); }
+          display: grid; place-items: center; background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
         .logo-preview :global(img) { width: 100%; height: 100%; object-fit: cover; }
         .swatches { display: flex; flex-wrap: wrap; gap: 10px; }
-        .swatch { width: 38px; height: 38px; border-radius: 10px; border: 2px solid var(--surface);
+        .swatch { width: 40px; height: 40px; border-radius: 10px; border: 2px solid var(--surface);
           box-shadow: 0 0 0 1px var(--border); display: grid; place-items: center; }
         .swatch.on { box-shadow: 0 0 0 2px var(--accent); }
-        .color-input { width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 8px; background: none; cursor: pointer; padding: 2px; }
-        .theme-preview { margin-top: 16px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); }
+        .brand-active { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+        .ba-label { font-size: 12.5px; font-weight: 600; color: var(--text-soft); }
+        .ba-grad { width: 46px; height: 22px; border-radius: 6px; }
+        .theme-preview { margin-top: 14px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); }
         .tp-row { display: flex; align-items: center; gap: 12px; }
       `}</style>
     </div>

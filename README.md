@@ -31,9 +31,12 @@ switcher (top bar + login), per-role grouped navigation and per-role dashboards.
 | **Settings** | admin | **Branding (logo upload + accent-colour picker)**, school config, RBAC matrix, users, integrations |
 | **Login** | — | Portal picker, Google sign-in, MFA note |
 
-Admins can **upload a school logo and choose an accent colour** in
-*Settings → Branding & Theme* — it applies across the whole app instantly and
-persists (sidebar, login, buttons, icons, charts).
+Admins **upload a school logo** in *Settings → Branding & Theme* and the app
+**automatically extracts the brand colours from the logo** (via canvas pixel
+sampling) — the two most prominent colours become the theme's primary + gradient
+partner and apply across the whole app instantly (sidebar, login, buttons, icons,
+chart gradients). Tap any extracted swatch to switch the primary. Persisted in
+localStorage.
 
 Every icon in the app is a **HugeIcons** glyph (no emoji), routed through a
 single semantic registry. India context throughout: CBSE grading, ₹/INR, DPDP

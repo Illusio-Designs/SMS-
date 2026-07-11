@@ -7,6 +7,7 @@
   --text-soft: #5b6178;
   --text-faint: #939ab3;
   --accent: #4f46e5;
+  --accent-2: #7c74f0;
   --accent-soft: #eef0fe;
   --green: #16a34a;
   --green-soft: #e7f7ec;
@@ -62,7 +63,7 @@ button { font-family: inherit; cursor: pointer; }
 .sidebar__brand .logo {
   width: 34px; height: 34px; border-radius: 9px;
   display: grid; place-items: center; font-size: 18px; overflow: hidden;
-  background: linear-gradient(135deg, var(--accent), #7c74f0);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
 }
 .sidebar__brand .logo img { width: 100%; height: 100%; object-fit: cover; }
 .sidebar__brand small { display: block; font-weight: 500; font-size: 11px; color: #8b90ad; }
@@ -266,7 +267,7 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 /* simple bar chart */
 .chart { display: flex; align-items: flex-end; gap: 12px; height: 160px; padding-top: 8px; }
 .chart .col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end; }
-.chart .col .fill { width: 100%; max-width: 46px; border-radius: 7px 7px 0 0; background: linear-gradient(var(--accent), #8b83f2); }
+.chart .col .fill { width: 100%; max-width: 46px; border-radius: 7px 7px 0 0; background: linear-gradient(var(--accent), var(--accent-2)); }
 .chart .col .cap { font-size: 11px; color: var(--text-soft); }
 .chart .col .val { font-size: 12px; font-weight: 700; }
 
