@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useApp } from '@/components/AppContext'
-import { Card, Kpi, Badge, Bar, BarChart, inr } from '@/components/ui'
+import { Card, Kpi, Badge, Bar, BarChart, inr, Glyph, Avatar } from '@/components/ui'
 import {
   adminKpis, enrollmentByGrade, attendanceTrend, feeSummary, invoices,
   announcements, admissions, leaveRequests, classRosterVIIIA, todayAttendance,
@@ -40,10 +40,10 @@ function AdminDash() {
   return (
     <div className="stack">
       <div className="grid kpis">
-        <Kpi label="Total Students" value={adminKpis.students.toLocaleString('en-IN')} sub="+38 this term" icon="👥" tone="accent" />
-        <Kpi label="Teachers" value={adminKpis.teachers} sub="6 departments" icon="🧑‍🏫" tone="blue" />
-        <Kpi label="Attendance Today" value={`${adminKpis.attendanceToday}%`} sub="school-wide" icon="✔" tone="green" />
-        <Kpi label="Fees Collected" value={`${feeSummary.collectionRate}%`} sub={`${inr(feeSummary.pending)} pending`} icon="₹" tone="amber" />
+        <Kpi label="Total Students" value={adminKpis.students.toLocaleString('en-IN')} sub="+38 this term" icon="people" tone="accent" />
+        <Kpi label="Teachers" value={adminKpis.teachers} sub="6 departments" icon="teacherPeople" tone="blue" />
+        <Kpi label="Attendance Today" value={`${adminKpis.attendanceToday}%`} sub="school-wide" icon="badge" tone="green" />
+        <Kpi label="Fees Collected" value={`${feeSummary.collectionRate}%`} sub={`${inr(feeSummary.pending)} pending`} icon="wallet" tone="amber" />
       </div>
 
       <div className="grid cols-2">
@@ -69,10 +69,10 @@ function AdminDash() {
         </Card>
         <Card title="Needs attention" action={<Link className="btn sm" href="/admissions">Admissions</Link>}>
           <div className="stack">
-            <AttnRow icon="📝" label="Open admission applications" value={admissions.filter(a => a.stage !== 'Enrolled').length} href="/admissions" />
-            <AttnRow icon="🗓" label="Pending leave requests" value={leaveRequests.filter(l => l.status === 'Pending').length} href="/attendance" />
-            <AttnRow icon="₹" label="Overdue fee invoices" value={invoices.filter(i => i.status === 'Overdue').length} href="/fees" />
-            <AttnRow icon="🧪" label="Upcoming exams" value={events.filter(e => e.tag === 'Exam').length} href="/gradebook" />
+            <AttnRow icon="admissions" label="Open admission applications" value={admissions.filter(a => a.stage !== 'Enrolled').length} href="/admissions" />
+            <AttnRow icon="calendar" label="Pending leave requests" value={leaveRequests.filter(l => l.status === 'Pending').length} href="/attendance" />
+            <AttnRow icon="wallet" label="Overdue fee invoices" value={invoices.filter(i => i.status === 'Overdue').length} href="/fees" />
+            <AttnRow icon="exam" label="Upcoming exams" value={events.filter(e => e.tag === 'Exam').length} href="/gradebook" />
           </div>
         </Card>
       </div>
@@ -108,7 +108,7 @@ function FeeStat({ label, value, tone, pct }) {
 function AttnRow({ icon, label, value, href }) {
   return (
     <Link href={href} className="between" style={{ padding: '4px 0' }}>
-      <span className="row"><span style={{ fontSize: 17 }}>{icon}</span> {label}</span>
+      <span className="row"><Glyph name={icon} size={18} color="var(--text-soft)" /> {label}</span>
       <span className="badge blue"><span className="dot" />{value}</span>
     </Link>
   )
@@ -121,10 +121,10 @@ function TeacherDash() {
   return (
     <div className="stack">
       <div className="grid kpis">
-        <Kpi label="My Class" value="VIII-A" sub={`${classRosterVIIIA.length} students`} icon="🏫" tone="accent" />
-        <Kpi label="Present Today" value={`${present}/${todayAttendance.length}`} sub="marked at 8:15 AM" icon="✔" tone="green" />
-        <Kpi label="Class Average" value={`${Math.round(gradebook.reduce((a, g) => a + g.pct, 0) / gradebook.length)}%`} sub="Term 1" icon="📊" tone="blue" />
-        <Kpi label="Pending Leaves" value={leaveRequests.filter(l => l.status === 'Pending').length} sub="to approve" icon="🗓" tone="amber" />
+        <Kpi label="My Class" value="VIII-A" sub={`${classRosterVIIIA.length} students`} icon="school" tone="accent" />
+        <Kpi label="Present Today" value={`${present}/${todayAttendance.length}`} sub="marked at 8:15 AM" icon="badge" tone="green" />
+        <Kpi label="Class Average" value={`${Math.round(gradebook.reduce((a, g) => a + g.pct, 0) / gradebook.length)}%`} sub="Term 1" icon="chart" tone="blue" />
+        <Kpi label="Pending Leaves" value={leaveRequests.filter(l => l.status === 'Pending').length} sub="to approve" icon="calendar" tone="amber" />
       </div>
 
       <div className="grid cols-2">
@@ -173,10 +173,10 @@ function StudentDash() {
   return (
     <div className="stack">
       <div className="grid kpis">
-        <Kpi label="Attendance" value={`${me.attendancePct}%`} sub="this term" icon="✔" tone="green" />
-        <Kpi label="Overall Grade" value={reportCard.scholastic.cgpa} sub={`Rank ${reportCard.scholastic.rank} in class`} icon="📊" tone="accent" />
-        <Kpi label="Class" value={`${me.grade}-${me.section}`} sub={`Roll ${me.roll} · ${me.house} House`} icon="🏫" tone="blue" />
-        <Kpi label="Fee Status" value={me.feeStatus} sub="Term 1" icon="₹" tone={me.feeStatus === 'Paid' ? 'green' : 'amber'} />
+        <Kpi label="Attendance" value={`${me.attendancePct}%`} sub="this term" icon="badge" tone="green" />
+        <Kpi label="Overall Grade" value={reportCard.scholastic.cgpa} sub={`Rank ${reportCard.scholastic.rank} in class`} icon="chart" tone="accent" />
+        <Kpi label="Class" value={`${me.grade}-${me.section}`} sub={`Roll ${me.roll} · ${me.house} House`} icon="school" tone="blue" />
+        <Kpi label="Fee Status" value={me.feeStatus} sub="Term 1" icon="wallet" tone={me.feeStatus === 'Paid' ? 'green' : 'amber'} />
       </div>
 
       <div className="grid cols-2">

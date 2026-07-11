@@ -23,10 +23,10 @@ function TeacherGradebook() {
   return (
     <div className="stack">
       <div className="grid kpis">
-        <Kpi label="Class average" value={`${classAvg}%`} tone="accent" icon="📊" />
-        <Kpi label="Highest" value={`${Math.max(...gradebook.map(g => g.pct))}%`} tone="green" icon="🏆" />
-        <Kpi label="Pass rate" value="100%" tone="green" icon="✔" />
-        <Kpi label="Subjects" value={subjects.length} tone="blue" icon="📚" />
+        <Kpi label="Class average" value={`${classAvg}%`} tone="accent" icon="chart" />
+        <Kpi label="Highest" value={`${Math.max(...gradebook.map(g => g.pct))}%`} tone="green" icon="award" />
+        <Kpi label="Pass rate" value="100%" tone="green" icon="badge" />
+        <Kpi label="Subjects" value={subjects.length} tone="blue" icon="book" />
       </div>
 
       <Card title="Gradebook — VIII-A · Term 1"
@@ -82,10 +82,10 @@ function StudentReport() {
   return (
     <div className="stack">
       <div className="grid kpis">
-        <Kpi label="Percentage" value={`${r.scholastic.percentage}%`} tone="accent" icon="📊" />
-        <Kpi label="CGPA" value={r.scholastic.cgpa} tone="blue" icon="🎯" />
-        <Kpi label="Class rank" value={`#${r.scholastic.rank}`} tone="green" icon="🏆" />
-        <Kpi label="Result" value={r.scholastic.result} tone="green" icon="✔" />
+        <Kpi label="Percentage" value={`${r.scholastic.percentage}%`} tone="accent" icon="chart" />
+        <Kpi label="CGPA" value={r.scholastic.cgpa} tone="blue" icon="badge" />
+        <Kpi label="Class rank" value={`#${r.scholastic.rank}`} tone="green" icon="award" />
+        <Kpi label="Result" value={r.scholastic.result} tone="green" icon="badge" />
       </div>
 
       <Card title={`Report card — ${r.term}`}

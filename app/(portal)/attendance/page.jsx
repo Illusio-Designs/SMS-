@@ -48,10 +48,10 @@ function TeacherAttendance() {
   return (
     <div className="stack">
       <div className="grid kpis">
-        <Kpi label="Present" value={present} tone="green" icon="✔" />
-        <Kpi label="Absent" value={absent} tone="red" icon="✕" />
-        <Kpi label="Class strength" value={todayAttendance.length} tone="blue" icon="👥" />
-        <Kpi label="Attendance %" value={`${Math.round((present / todayAttendance.length) * 100)}%`} tone="accent" icon="📊" />
+        <Kpi label="Present" value={present} tone="green" icon="badge" />
+        <Kpi label="Absent" value={absent} tone="red" icon="alert" />
+        <Kpi label="Class strength" value={todayAttendance.length} tone="blue" icon="people" />
+        <Kpi label="Attendance %" value={`${Math.round((present / todayAttendance.length) * 100)}%`} tone="accent" icon="chart" />
       </div>
 
       <Card
@@ -106,10 +106,10 @@ function AdminAttendance() {
   return (
     <div className="stack">
       <div className="grid kpis">
-        <Kpi label="Present today" value="93%" sub="1,194 / 1,284" tone="green" icon="✔" />
-        <Kpi label="On leave" value="41" sub="approved" tone="amber" icon="🗓" />
-        <Kpi label="Absent" value="49" sub="unaccounted" tone="red" icon="✕" />
-        <Kpi label="Weekly avg" value="94%" sub="school-wide" tone="accent" icon="📊" />
+        <Kpi label="Present today" value="93%" sub="1,194 / 1,284" tone="green" icon="badge" />
+        <Kpi label="On leave" value="41" sub="approved" tone="amber" icon="calendar" />
+        <Kpi label="Absent" value="49" sub="unaccounted" tone="red" icon="alert" />
+        <Kpi label="Weekly avg" value="94%" sub="school-wide" tone="accent" icon="chart" />
       </div>
       <div className="grid cols-2">
         <Card title="Attendance — last 7 school days">
@@ -154,10 +154,10 @@ function StudentAttendance() {
   return (
     <div className="stack">
       <div className="grid kpis">
-        <Kpi label="Overall" value={`${me.attendancePct}%`} tone="green" icon="✔" />
-        <Kpi label="Present days" value="70" tone="accent" icon="📅" />
-        <Kpi label="Absent days" value="4" tone="red" icon="✕" />
-        <Kpi label="Leaves" value="1" tone="amber" icon="🗓" />
+        <Kpi label="Overall" value={`${me.attendancePct}%`} tone="green" icon="badge" />
+        <Kpi label="Present days" value="70" tone="accent" icon="calendar" />
+        <Kpi label="Absent days" value="4" tone="red" icon="alert" />
+        <Kpi label="Leaves" value="1" tone="amber" icon="calendar" />
       </div>
       <Card title="Month-wise attendance">
         <div className="stack">

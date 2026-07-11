@@ -23,10 +23,10 @@ function AdminFees() {
   return (
     <div className="stack">
       <div className="grid kpis">
-        <Kpi label="Collected (Term 1)" value={inr(feeSummary.collected)} sub={`${feeSummary.collectionRate}% of billed`} tone="green" icon="₹" />
-        <Kpi label="Pending" value={inr(feeSummary.pending)} tone="amber" icon="⏳" />
-        <Kpi label="Overdue" value={inr(feeSummary.overdue)} sub={`${feeSummary.defaulters} defaulters`} tone="red" icon="⚠" />
-        <Kpi label="Collection rate" value={`${feeSummary.collectionRate}%`} tone="accent" icon="📊" />
+        <Kpi label="Collected (Term 1)" value={inr(feeSummary.collected)} sub={`${feeSummary.collectionRate}% of billed`} tone="green" icon="wallet" />
+        <Kpi label="Pending" value={inr(feeSummary.pending)} tone="amber" icon="clock" />
+        <Kpi label="Overdue" value={inr(feeSummary.overdue)} sub={`${feeSummary.defaulters} defaulters`} tone="red" icon="alert" />
+        <Kpi label="Collection rate" value={`${feeSummary.collectionRate}%`} tone="accent" icon="chart" />
       </div>
 
       <Card title="Fee structure — Annual"
@@ -92,9 +92,9 @@ function ParentFees() {
   return (
     <div className="stack">
       <div className="grid kpis">
-        <Kpi label="Total due" value={inr(totalDue)} tone={totalDue ? 'amber' : 'green'} icon="₹" />
-        <Kpi label="Children" value={rows.length} tone="blue" icon="👨‍👩‍👧" />
-        <Kpi label="Paid this year" value={inr(rows.reduce((a, r) => a + r.paid, 0))} tone="green" icon="✔" />
+        <Kpi label="Total due" value={inr(totalDue)} tone={totalDue ? 'amber' : 'green'} icon="wallet" />
+        <Kpi label="Children" value={rows.length} tone="blue" icon="parent" />
+        <Kpi label="Paid this year" value={inr(rows.reduce((a, r) => a + r.paid, 0))} tone="green" icon="badge" />
       </div>
 
       <div className="stack">
