@@ -78,7 +78,7 @@ export default function Sidebar({ open, onNavigate }) {
       </nav>
 
       <div className="sidebar__foot">
-        <Link href="/login" className="logout-link" onClick={onNavigate}>
+        <Link href={role === 'system' ? '/system-login' : '/login'} className="logout-link" onClick={onNavigate}>
           <Glyph name="logout" size={16} /> Sign out
         </Link>
         <div style={{ marginTop: 10 }}>{school.board} · {school.session} · demo</div>
