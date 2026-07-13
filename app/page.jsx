@@ -121,12 +121,12 @@ export default function Landing() {
         <p className="lp-lead">Every school runs on its own web address and its own isolated database — one platform, many schools.</p>
         <div className="lp-domains">
           <div className="lp-dcard">
-            <span className="lp-num">1</span><b>Pick your address</b>
-            <span>Get a Scholr subdomain like <code>greenwood.scholr.app</code>, or connect your own domain such as <code>portal.greenwood.edu.in</code>.</span>
+            <span className="lp-num">1</span><b>Use your own domain</b>
+            <span>Keep your website at <code>sunrise.com</code> and open the school portal under a path — <code>sunrise.com/school</code>. Prefer a subdomain? <code>sunrise.scholr.app</code> works too.</span>
           </div>
           <div className="lp-dcard">
             <span className="lp-num">2</span><b>Point DNS</b>
-            <span>Add a simple CNAME from your subdomain to Scholr. We issue the SSL certificate automatically.</span>
+            <span>Add a simple CNAME (or reverse-proxy <code>/school</code>) to Scholr. We issue the SSL certificate automatically.</span>
           </div>
           <div className="lp-dcard">
             <span className="lp-num">3</span><b>Isolated & branded</b>
