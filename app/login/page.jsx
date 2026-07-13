@@ -16,7 +16,6 @@ export default function LoginPage() {
   const { setRole, logo } = useApp()
   const [mode, setMode] = useState('school')       // 'school' | 'system'
   const [picked, setPicked] = useState('admin')
-  const [method, setMethod] = useState('password') // 'password' | 'otp'
 
   // OTP (MSG91) state
   const [phone, setPhone] = useState('+91 98765 43210')
@@ -59,7 +58,7 @@ export default function LoginPage() {
             <SystemLogin onSubmit={() => go('system')} />
           ) : (
             <>
-              <p className="muted" style={{ fontSize: 13, marginBottom: 14 }}>Choose a portal, then sign in.</p>
+              <p className="muted" style={{ fontSize: 13, marginBottom: 14 }}>Choose a portal, then sign in with a one-time password.</p>
               <div className="role-grid five">
                 {SCHOOL_ROLES.map((r) => (
                   <button key={r} type="button" className={`role-tile ${picked === r ? 'on' : ''}`}
@@ -70,47 +69,26 @@ export default function LoginPage() {
                 ))}
               </div>
 
-              {/* method toggle */}
-              <div className="method-toggle">
-                <button className={method === 'password' ? 'on' : ''} onClick={() => setMethod('password')}>Password</button>
-                <button className={method === 'otp' ? 'on' : ''} onClick={() => setMethod('otp')}>OTP</button>
-              </div>
-
-              {method === 'password' ? (
-                <form onSubmit={(e) => { e.preventDefault(); go(picked) }}>
-                  <Field label="Email or phone"><Input type="text" defaultValue={demoEmail(picked)} /></Field>
-                  <Field label="Password"><Input type="password" defaultValue="demo1234" /></Field>
-                  <Button variant="primary" type="submit" style={{ width: '100%', justifyContent: 'center', marginTop: 4 }}>
-                    Sign in as {ROLE_LABELS[picked]}
-                  </Button>
-                </form>
-              ) : (
-                <form onSubmit={otpSent ? verifyOtp : sendOtp}>
-                  <Field label="Mobile number">
-                    <Input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} disabled={otpSent} />
+              <form onSubmit={otpSent ? verifyOtp : sendOtp} style={{ marginTop: 16 }}>
+                <Field label="Mobile number">
+                  <Input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} disabled={otpSent} />
+                </Field>
+                {otpSent && (
+                  <Field label="Enter OTP">
+                    <Input type="text" inputMode="numeric" maxLength={6} value={otp} onChange={(e) => setOtp(e.target.value)} placeholder="4-digit code" style={{ letterSpacing: 6, fontWeight: 700 }} />
                   </Field>
-                  {otpSent && (
-                    <Field label="Enter OTP">
-                      <Input type="text" inputMode="numeric" maxLength={6} value={otp} onChange={(e) => setOtp(e.target.value)} placeholder="4-digit code" style={{ letterSpacing: 6, fontWeight: 700 }} />
-                    </Field>
-                  )}
-                  {otpErr && <p style={{ color: 'var(--red)', fontSize: 12, marginBottom: 8 }}>{otpErr}</p>}
-                  {otpSent && (
-                    <div className="otp-note">
-                      <Glyph name="sms" size={14} /> OTP sent via <b>MSG91</b> to {phone}. <span className="muted">Demo code: {DEMO_OTP}</span>
-                      <button type="button" className="linkish" onClick={() => setOtpSent(false)}>Change number</button>
-                    </div>
-                  )}
-                  <Button variant="primary" type="submit" style={{ width: '100%', justifyContent: 'center', marginTop: 4 }}>
-                    {otpSent ? `Verify & sign in as ${ROLE_LABELS[picked]}` : 'Send OTP'}
-                  </Button>
-                </form>
-              )}
-
-              <div className="or"><span>or</span></div>
-              <Button style={{ width: '100%', justifyContent: 'center' }} onClick={() => go(picked)}>
-                <Glyph name="badge" size={16} /> Continue with Google
-              </Button>
+                )}
+                {otpErr && <p style={{ color: 'var(--red)', fontSize: 12, marginBottom: 8 }}>{otpErr}</p>}
+                {otpSent && (
+                  <div className="otp-note">
+                    <Glyph name="sms" size={14} /> OTP sent via <b>MSG91</b> to {phone}. <span className="muted">Demo code: {DEMO_OTP}</span>
+                    <button type="button" className="linkish" onClick={() => setOtpSent(false)}>Change number</button>
+                  </div>
+                )}
+                <Button variant="primary" type="submit" style={{ width: '100%', justifyContent: 'center', marginTop: 4 }}>
+                  {otpSent ? `Verify & sign in as ${ROLE_LABELS[picked]}` : 'Send OTP'}
+                </Button>
+              </form>
             </>
           )}
 
@@ -175,13 +153,4 @@ function SystemLogin({ onSubmit }) {
 
 function shortRole(r) {
   return { admin: 'Admin', teacher: 'Teacher', student: 'Student', parent: 'Parent', finance: 'Finance' }[r]
-}
-function demoEmail(role) {
-  return {
-    admin: 'priya.nair@greenwood.edu.in',
-    teacher: 'rahul.d@greenwood.edu.in',
-    student: 'aarav.m@greenwood.edu.in',
-    parent: 'sunita.mehta@gmail.com',
-    finance: 'anil.finance@greenwood.edu.in',
-  }[role]
 }
