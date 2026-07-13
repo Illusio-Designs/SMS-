@@ -1,4 +1,4 @@
-# Scholr — School Management System (by Illusio)
+# Scholr — School Management System (by Finvera)
 
 A **web-first, full-featured** School Management System frontend for a single
 school in India, built to the [PRD](./PRD-School-Management-System.md) with
@@ -129,7 +129,7 @@ A full brand identity for **Scholr** lives in [`brand/`](./brand) and
   logo in the sidebar and login.
 - **Colour code / brand guide** — [`brand/BRAND.md`](./brand/BRAND.md) (indigo
   `#4F46E5` → violet `#7C3AED`, emerald `#10B981` accent, full palette).
-- **Product brochure** — [`brand/Illusio-SMS-Brochure.pdf`](./brand/Illusio-SMS-Brochure.pdf),
+- **Product brochure** — [`brand/Scholr-Brochure.pdf`](./brand/Scholr-Brochure.pdf),
   a 6-page A4 PDF built from the brand palette. Regenerate with:
   `NODE_PATH=$(npm root -g) node brand/render.js` (edits: `brand/brochure.html`).
 

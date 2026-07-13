@@ -29,7 +29,7 @@ export default function LoginPage() {
             {logo ? <img src={logo} alt="School logo" /> : <BrandGlyph size={28} />}
           </span>
           <div>
-            <b>Scholr <span style={{ fontWeight: 500, color: 'var(--text-faint)', fontSize: 12 }}>by Illusio</span></b>
+            <b>Scholr <span style={{ fontWeight: 500, color: 'var(--text-faint)', fontSize: 12 }}>by Finvera</span></b>
             <div className="muted" style={{ fontSize: 12.5 }}>{school.name} · {school.board}</div>
           </div>
         </div>
@@ -86,9 +86,9 @@ export default function LoginPage() {
 
 function demoEmail(role) {
   return {
-    admin: 'priya.nair@illusio.edu.in',
-    teacher: 'rahul.d@illusio.edu.in',
-    student: 'aarav.m@illusio.edu.in',
+    admin: 'priya.nair@greenwood.edu.in',
+    teacher: 'rahul.d@greenwood.edu.in',
+    student: 'aarav.m@greenwood.edu.in',
     parent: 'sunita.mehta@gmail.com',
   }[role]
 }

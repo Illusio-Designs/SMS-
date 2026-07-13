@@ -1,4 +1,4 @@
-// Illusio SMS — shared component library barrel.
+// Scholr — shared component library barrel.
 // Import everything from '@/components/ui'.
 
 export { default as Icon, Glyph } from './Icon'

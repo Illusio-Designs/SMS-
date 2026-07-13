@@ -1,6 +1,6 @@
 # Scholr — Brand Guide
 
-**Scholr** — School Management System, *by Illusio*.
+**Scholr** — School Management System, *by Finvera*.
 
 
 ## Logo
@@ -15,7 +15,7 @@ The mark is a **mortarboard** (education) with an **emerald tassel bead** (the
 
 | Role | Name | Hex | Use |
 |---|---|---|---|
-| **Primary** | Illusio Indigo | `#4F46E5` | Brand primary, buttons, active states, links |
+| **Primary** | Scholr Indigo | `#4F46E5` | Brand primary, buttons, active states, links |
 | **Primary 2** | Violet | `#7C3AED` | Gradient partner (logo, hero, charts) |
 | **Accent** | Emerald | `#10B981` | Success, positive metrics, the tassel bead |
 | **Ink** | Midnight | `#141726` | Headings, body text, dark sidebar (`#171A2B`) |

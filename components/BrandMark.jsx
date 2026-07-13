@@ -1,6 +1,6 @@
 'use client'
 
-// Scholr (by Illusio) brand mark. `BrandGlyph` is the white mortarboard for use inside
+// Scholr (by Finvera) brand mark. `BrandGlyph` is the white mortarboard for use inside
 // the themed gradient containers (sidebar/login). `BrandMark` is the full
 // self-contained badge (fixed brand colours) for standalone use.
 
