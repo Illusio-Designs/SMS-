@@ -7,6 +7,7 @@ import {
   adminKpis, enrollmentByGrade, attendanceTrend, feeSummary, invoices,
   announcements, admissions, leaveRequests, classRosterVIIIA, todayAttendance,
   gradebook, reportCard, findStudent, events, students,
+  financeKpis, branchFinance, branches, tenantSchools, systemKpis, auditLogs,
 } from '@/lib/mockData'
 
 export default function DashboardPage() {
@@ -21,6 +22,8 @@ export default function DashboardPage() {
       {role === 'teacher' && <TeacherDash />}
       {role === 'student' && <StudentDash />}
       {role === 'parent' && <ParentDash />}
+      {role === 'finance' && <FinanceDash />}
+      {role === 'system' && <SystemDash />}
     </div>
   )
 }
@@ -31,7 +34,74 @@ function greeting(role) {
     teacher: 'Your classes, attendance and gradebook at a glance.',
     student: 'Your timetable, grades, attendance and fees.',
     parent: "Your children's progress, attendance and fees.",
+    finance: 'Fee collections, dues and transactions across all branches.',
+    system: 'Platform health and all schools on Scholr.',
   }[role]
+}
+
+/* ---------------- Financial Manager ---------------- */
+function FinanceDash() {
+  return (
+    <div className="stack">
+      <div className="grid kpis">
+        <Kpi label="Collected" value={inr(financeKpis.collected)} sub={`${financeKpis.collectionRate}% of billed`} icon="wallet" tone="green" />
+        <Kpi label="Pending" value={inr(financeKpis.pending)} icon="clock" tone="amber" />
+        <Kpi label="Overdue" value={inr(financeKpis.overdue)} sub={`${financeKpis.defaulters} defaulters`} icon="alert" tone="red" />
+        <Kpi label="Billed" value={inr(financeKpis.billed)} icon="invoice" tone="accent" />
+      </div>
+      <div className="grid cols-2">
+        <Card title="Collection by branch" action={<Link className="btn sm" href="/finance">Open Finance</Link>}>
+          <BarChart data={branchFinance.map((f) => ({ band: f.branch.replace(' Branch', '').replace(' Campus', ''), count: Math.round((f.collected / f.billed) * 100) }))} valueKey="count" labelKey="band" format={(v) => `${v}%`} />
+        </Card>
+        <Card title="Branch dues" action={<Link className="btn sm" href="/branches">Branches</Link>}>
+          <div className="stack">
+            {branchFinance.map((f) => (
+              <div key={f.branchId} className="between">
+                <span>{f.branch}</span>
+                <span className="row"><b className="mono">{inr(f.pending)}</b><Badge tone="amber">{f.defaulters}</Badge></span>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </div>
+    </div>
+  )
+}
+
+/* ---------------- System Admin ---------------- */
+function SystemDash() {
+  return (
+    <div className="stack">
+      <div className="grid kpis">
+        <Kpi label="Schools" value={systemKpis.schools} sub={`${systemKpis.activeSchools} active`} icon="school" tone="accent" />
+        <Kpi label="Branches" value={systemKpis.branches} icon="building" tone="blue" />
+        <Kpi label="Students" value={systemKpis.totalStudents.toLocaleString('en-IN')} icon="people" tone="teal" />
+        <Kpi label="Uptime" value={`${systemKpis.uptime}%`} icon="badge" tone="green" />
+      </div>
+      <div className="grid cols-2">
+        <Card title="Schools (tenants)" action={<Link className="btn sm" href="/schools">Manage</Link>}>
+          <div className="stack">
+            {tenantSchools.map((s) => (
+              <div key={s.id} className="between">
+                <div><b>{s.name}</b><div className="faint" style={{ fontSize: 12 }}>{s.domain} · {s.branches} branches</div></div>
+                <Badge tone={s.status === 'Active' ? 'green' : 'red'}>{s.status}</Badge>
+              </div>
+            ))}
+          </div>
+        </Card>
+        <Card title="Recent platform activity" action={<Link className="btn sm" href="/audit">System Log</Link>}>
+          <div className="stack">
+            {auditLogs.filter((l) => l.module === 'Platform' || l.role === 'system').slice(0, 5).map((l) => (
+              <div key={l.id}>
+                <b style={{ fontSize: 13 }}>{l.action}</b>
+                <div className="faint" style={{ fontSize: 12 }}>{l.actor} · {l.at}</div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </div>
+    </div>
+  )
 }
 
 /* ---------------- Admin ---------------- */

@@ -19,6 +19,7 @@ function tint(hex, amt = 0.9) {
 
 export function AppProvider({ children }) {
   const [role, setRole] = useState('admin')
+  const [branchId, setBranchId] = useState('all') // 'all' or a branch id
   const [accent, setAccentState] = useState(DEFAULT_ACCENT)
   const [accent2, setAccent2State] = useState(DEFAULT_ACCENT_2)
   const [logo, setLogoState] = useState(null) // data URL or null
@@ -82,7 +83,7 @@ export function AppProvider({ children }) {
 
   return (
     <AppContext.Provider
-      value={{ role, setRole, currentUser, ready, accent, accent2, setAccent, setBrand, logo, setLogo, resetTheme }}
+      value={{ role, setRole, branchId, setBranchId, currentUser, ready, accent, accent2, setAccent, setBrand, logo, setLogo, resetTheme }}
     >
       {children}
     </AppContext.Provider>

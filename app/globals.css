@@ -145,6 +145,12 @@ button { font-family: inherit; cursor: pointer; }
 }
 .rolepick button.on { background: var(--accent); color: #fff; }
 
+.branchpick {
+  display: flex; align-items: center; gap: 7px; padding: 0 10px;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; height: 38px;
+}
+.branchpick select { border: none; background: none; font-size: 12.5px; font-weight: 600; color: var(--text); font-family: inherit; outline: none; cursor: pointer; }
+
 .icon-btn {
   position: relative; width: 40px; height: 40px; border-radius: 50%;
   border: 1px solid var(--border); background: var(--surface); color: var(--text-soft);
@@ -342,9 +348,10 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
   .scrim.show { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 35; }
   .page { padding: 16px; }
   .rolepick__label { display: none; }
-  .rolepick button { padding: 7px 9px; }
+  .rolepick button { padding: 7px 8px; }
   .user-chip .meta { display: none; }
-  .topbar { padding: 0 14px; gap: 10px; }
+  .topbar { padding: 0 14px; gap: 8px; }
   .topbar h1 { font-size: 15px; }
   .icon-btn { display: none; }
+  .branchpick { display: none; }
 }
