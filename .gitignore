@@ -29,3 +29,6 @@ yarn-error.log*
 # editor
 .idea
 .vscode
+
+# generated brochure intermediate (source is brand/brochure.html + render.js)
+brand/brochure.rendered.html

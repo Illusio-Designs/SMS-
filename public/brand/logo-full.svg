@@ -1,0 +1,22 @@
+<svg width="880" height="240" viewBox="0 0 880 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illusio SMS — School Management System">
+  <defs>
+    <linearGradient id="illMark2" x1="24" y1="24" x2="216" y2="216" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <!-- mark -->
+  <g transform="translate(24,20)">
+    <rect width="200" height="200" rx="46" fill="url(#illMark2)"/>
+    <g transform="translate(0,0) scale(0.390625)">
+      <path d="M196 250 L316 250 L316 300 Q316 334 256 334 Q196 334 196 300 Z" fill="#C7C9F7"/>
+      <path d="M256 150 L406 214 L256 278 L106 214 Z" fill="#ffffff"/>
+      <circle cx="256" cy="214" r="14" fill="#4F46E5"/>
+      <path d="M406 214 L406 308" stroke="#ffffff" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="406" cy="322" r="16" fill="#10B981"/>
+    </g>
+  </g>
+  <!-- wordmark -->
+  <text x="256" y="112" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="72" font-weight="800" letter-spacing="-1.5" fill="#141726">Illusio<tspan fill="#4F46E5"> SMS</tspan></text>
+  <text x="258" y="158" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24" font-weight="600" letter-spacing="6" fill="#5B6178">SCHOOL MANAGEMENT SYSTEM</text>
+</svg>

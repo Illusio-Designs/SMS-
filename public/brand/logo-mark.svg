@@ -1,0 +1,23 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illusio SMS logo mark">
+  <defs>
+    <linearGradient id="illMark" x1="40" y1="40" x2="472" y2="472" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="illShine" x1="256" y1="0" x2="256" y2="512" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="118" fill="url(#illMark)"/>
+  <rect width="512" height="512" rx="118" fill="url(#illShine)"/>
+  <!-- mortarboard cap band -->
+  <path d="M196 250 L316 250 L316 300 Q316 334 256 334 Q196 334 196 300 Z" fill="#C7C9F7"/>
+  <!-- mortarboard board -->
+  <path d="M256 150 L406 214 L256 278 L106 214 Z" fill="#ffffff"/>
+  <!-- center button -->
+  <circle cx="256" cy="214" r="14" fill="#4F46E5"/>
+  <!-- tassel -->
+  <path d="M406 214 L406 308" stroke="#ffffff" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="406" cy="322" r="16" fill="#10B981"/>
+</svg>

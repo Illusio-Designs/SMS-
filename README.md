@@ -118,5 +118,20 @@ lib/
   nav.js               grouped, per-role navigation config
 ```
 
+## Brand assets
+
+A full brand identity for **Illusio SMS** lives in [`brand/`](./brand) and
+[`public/brand/`](./public/brand):
+
+- **Logo** — `public/brand/logo-full.svg` (mark + wordmark), `logo-mark.svg`
+  (icon) and `.png` exports. Rendered live in-app by
+  [`components/BrandMark.jsx`](./components/BrandMark.jsx) and used as the default
+  logo in the sidebar and login.
+- **Colour code / brand guide** — [`brand/BRAND.md`](./brand/BRAND.md) (indigo
+  `#4F46E5` → violet `#7C3AED`, emerald `#10B981` accent, full palette).
+- **Product brochure** — [`brand/Illusio-SMS-Brochure.pdf`](./brand/Illusio-SMS-Brochure.pdf),
+  a 6-page A4 PDF built from the brand palette. Regenerate with:
+  `NODE_PATH=$(npm root -g) node brand/render.js` (edits: `brand/brochure.html`).
+
 > This is a **frontend prototype with mock data** for review and demos — no real
 > authentication, payments, or persistence.

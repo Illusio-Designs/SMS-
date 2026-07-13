@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useApp } from '@/components/AppContext'
 import { Glyph, Button, Field, Input } from '@/components/ui'
+import { BrandGlyph } from '@/components/BrandMark'
 import { ROLE_LABELS, ROLE_ICON } from '@/lib/nav'
 import { school } from '@/lib/mockData'
 
@@ -25,7 +26,7 @@ export default function LoginPage() {
       <div className="login-card">
         <div className="login-brand">
           <span className="login-logo">
-            {logo ? <img src={logo} alt="School logo" /> : <Glyph name="school" size={26} color="#fff" strokeWidth={2} />}
+            {logo ? <img src={logo} alt="School logo" /> : <BrandGlyph size={28} />}
           </span>
           <div>
             <b>Illusio SMS</b>

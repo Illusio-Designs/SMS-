@@ -7,6 +7,7 @@ import { useApp } from './AppContext'
 import { groupedNavForRole, ROLE_LABELS, SECTION_ICON } from '@/lib/nav'
 import { school } from '@/lib/mockData'
 import { Glyph } from '@/components/ui'
+import { BrandGlyph } from '@/components/BrandMark'
 
 export default function Sidebar({ open, onNavigate }) {
   const pathname = usePathname()
@@ -32,7 +33,7 @@ export default function Sidebar({ open, onNavigate }) {
         <span className="logo">
           {logo
             ? <img src={logo} alt="School logo" />
-            : <Glyph name="school" size={20} color="#fff" strokeWidth={2} />}
+            : <BrandGlyph size={22} />}
         </span>
         <span>
           Illusio SMS

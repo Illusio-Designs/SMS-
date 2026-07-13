@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Illusio SMS — Product Brochure</title>
+<style>
+  :root{
+    --indigo:#4F46E5; --violet:#7C3AED; --emerald:#10B981;
+    --ink:#141726; --slate:#5B6178; --line:#E6E8EF; --mist:#F5F6FA; --cloud:#FAFBFD;
+    --amber:#D97706; --red:#DC2626; --blue:#2563EB; --green:#16A34A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{font-family:'Inter','Segoe UI',Arial,sans-serif;color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @page{size:A4;margin:0}
+  .page{
+    position:relative;width:210mm;height:297mm;padding:20mm 18mm;overflow:hidden;
+    page-break-after:always;background:#fff;display:flex;flex-direction:column;
+  }
+  .page:last-child{page-break-after:auto}
+  h1{font-size:34pt;font-weight:800;letter-spacing:-1px;line-height:1.05}
+  h2{font-size:22pt;font-weight:800;letter-spacing:-.5px;margin-bottom:4mm}
+  h3{font-size:12.5pt;font-weight:700}
+  p{font-size:10.5pt;line-height:1.55;color:#33384a}
+  .muted{color:var(--slate)}
+  .grad-text{background:linear-gradient(120deg,var(--indigo),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* mark */
+  .mark{width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,var(--indigo),var(--violet));display:inline-flex}
+  .mark svg{width:100%;height:100%}
+  .brandrow{display:flex;align-items:center;gap:14px}
+  .brandrow .wm{font-size:19pt;font-weight:800;letter-spacing:-.5px}
+  .brandrow .wm span{color:var(--indigo)}
+  .brandrow .tag{font-size:7.5pt;letter-spacing:3px;color:var(--slate);font-weight:600}
+
+  /* cover */
+  .cover{color:#fff;background:
+      radial-gradient(900px 500px at 80% -10%, rgba(124,58,237,.55), transparent 60%),
+      radial-gradient(700px 500px at 0% 110%, rgba(16,185,129,.30), transparent 55%),
+      linear-gradient(150deg,#4F46E5,#4338CA 55%,#312E81);}
+  .cover h1{font-size:44pt}
+  .chip{display:inline-block;padding:5px 13px;border-radius:999px;font-size:8.5pt;font-weight:700;letter-spacing:1px;background:rgba(255,255,255,.16);color:#fff}
+  .cover-foot{display:flex;gap:8mm;margin-top:auto}
+  .cover-foot .s{font-size:8.5pt;opacity:.85}
+  .cover-stats{display:flex;gap:10mm;margin-top:8mm}
+  .cover-stats .n{font-size:26pt;font-weight:800}
+  .cover-stats .l{font-size:8.5pt;opacity:.85;letter-spacing:.5px}
+
+  /* layout bits */
+  .eyebrow{font-size:8.5pt;font-weight:800;letter-spacing:2px;color:var(--indigo);text-transform:uppercase;margin-bottom:3mm}
+  .rule{height:4px;width:54px;border-radius:4px;background:linear-gradient(90deg,var(--indigo),var(--violet));margin:2mm 0 6mm}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:6mm}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5mm}
+  .card{border:1px solid var(--line);border-radius:12px;padding:6mm;background:var(--cloud)}
+  .card h3{margin-bottom:2mm}
+  .card p{font-size:9.5pt}
+  .chipico{width:38px;height:38px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13pt;margin-bottom:3mm}
+  .foot{position:absolute;left:18mm;right:18mm;bottom:12mm;display:flex;justify-content:space-between;font-size:8pt;color:var(--slate);border-top:1px solid var(--line);padding-top:3mm}
+
+  .portal{border:1px solid var(--line);border-radius:12px;padding:5mm;display:flex;gap:4mm;align-items:flex-start}
+  .portal .dot{width:30px;height:30px;border-radius:9px;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:11pt}
+  .portal h3{font-size:11pt}
+  .portal p{font-size:9pt;margin-top:1mm}
+
+  .mod{display:flex;gap:3mm;align-items:flex-start;padding:3.5mm;border:1px solid var(--line);border-radius:10px;background:#fff}
+  .mod .mi{width:30px;height:30px;border-radius:8px;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:10.5pt}
+  .mod b{font-size:10pt}
+  .mod p{font-size:8.3pt;margin-top:.5mm;line-height:1.4}
+
+  .hi{display:flex;gap:4mm;padding:5mm;border:1px solid var(--line);border-radius:12px;background:var(--cloud);margin-bottom:4mm}
+  .hi .hn{width:44px;height:44px;border-radius:12px;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15pt}
+  .hi h3{font-size:12pt}
+  .hi p{font-size:9.5pt;margin-top:1mm}
+
+  .band{border-radius:14px;padding:7mm;color:#fff;background:linear-gradient(135deg,var(--indigo),var(--violet))}
+  .band h2{color:#fff}
+  .cta{display:inline-block;margin-top:4mm;background:#fff;color:var(--indigo);font-weight:800;font-size:10pt;padding:9px 18px;border-radius:10px}
+  ul.ticks{list-style:none;margin-top:3mm}
+  ul.ticks li{font-size:10pt;padding:2mm 0 2mm 8mm;position:relative;color:#33384a}
+  ul.ticks li:before{content:'';position:absolute;left:0;top:3mm;width:16px;height:16px;border-radius:50%;background:var(--emerald)}
+  ul.ticks li:after{content:'';position:absolute;left:5px;top:6.2mm;width:5px;height:2.5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg)}
+  .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;margin-top:5mm}
+  .ph{border:1px solid var(--line);border-radius:10px;padding:4mm}
+  .ph .pn{font-size:8pt;font-weight:800;color:var(--indigo);letter-spacing:1px}
+  .ph b{font-size:10pt;display:block;margin:1mm 0}
+  .ph span{font-size:8.3pt;color:var(--slate)}
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="page cover">
+  <div class="brandrow">
+    <span class="mark">__MARK__</span>
+    <div>
+      <div class="wm" style="color:#fff">Illusio <span style="color:#fff">SMS</span></div>
+      <div class="tag" style="color:rgba(255,255,255,.8)">SCHOOL MANAGEMENT SYSTEM</div>
+    </div>
+  </div>
+
+  <div style="margin-top:34mm">
+    <span class="chip">PRODUCT BROCHURE · 2026</span>
+    <h1 style="margin-top:6mm">One platform to run<br/>your entire school.</h1>
+    <p style="color:rgba(255,255,255,.9);max-width:150mm;margin-top:5mm;font-size:12pt">
+      A web-first, privacy-first School Management System for a single school in India —
+      admissions to analytics, in one source of truth. Built for administrators,
+      teachers, students and parents.
+    </p>
+    <div class="cover-stats">
+      <div><div class="n">15+</div><div class="l">INTEGRATED MODULES</div></div>
+      <div><div class="n">4</div><div class="l">ROLE-BASED PORTALS</div></div>
+      <div><div class="n">99.9%</div><div class="l">TARGET UPTIME</div></div>
+      <div><div class="n">DPDP</div><div class="l">2023 COMPLIANT</div></div>
+    </div>
+  </div>
+
+  <div class="cover-foot">
+    <div class="s">Illusio Public School · CBSE · Pune, Maharashtra</div>
+    <div class="s">illusiodesigns@gmail.com</div>
+  </div>
+</section>
+
+<!-- ============ CHALLENGE / SOLUTION ============ -->
+<section class="page">
+  <div class="eyebrow">The challenge</div>
+  <h2>Schools run on disconnected tools.</h2>
+  <div class="rule"></div>
+  <div class="grid2" style="margin-bottom:8mm">
+    <div class="card"><h3>Data silos</h3><p>Student info, grades and fees live in separate spreadsheets and apps — no single source of truth.</p></div>
+    <div class="card"><h3>Manual, error-prone work</h3><p>Paper attendance, hand-calculated report cards and manual fee reconciliation waste staff time.</p></div>
+    <div class="card"><h3>Poor parent visibility</h3><p>Parents chase phone calls and office visits to learn about grades, attendance and fees.</p></div>
+    <div class="card"><h3>Compliance risk</h3><p>India's DPDP Act 2023 requires verifiable parental consent and strict handling of children's data.</p></div>
+  </div>
+
+  <div class="eyebrow">The solution</div>
+  <h2>Illusio brings it all together.</h2>
+  <div class="rule"></div>
+  <p style="max-width:160mm">A modern, integrated platform that automates high-volume workflows, gives every
+    stakeholder self-service access, and is private and compliant from day one — so staff spend less time on
+    admin and more time on students.</p>
+  <ul class="ticks">
+    <li>One centralised student record (SIS) as the backbone of everything</li>
+    <li>Automated attendance, grading and fee collection</li>
+    <li>Self-service portals for admins, teachers, students and parents</li>
+    <li>Actionable analytics that flag at-risk students 6–8 weeks earlier</li>
+  </ul>
+  <div class="foot"><span>Illusio SMS · Product Brochure 2026</span><span>02</span></div>
+</section>
+
+<!-- ============ PORTALS ============ -->
+<section class="page">
+  <div class="eyebrow">One platform, four portals</div>
+  <h2>Everyone gets exactly what they need.</h2>
+  <div class="rule"></div>
+  <p style="max-width:160mm;margin-bottom:6mm">Role-based access means each person sees only the modules relevant to them —
+    enforced at the service and data layers, least-privilege by default.</p>
+
+  <div class="grid2">
+    <div class="portal"><span class="dot" style="background:#4F46E5">A</span><div><h3>Administrator</h3><p class="muted">Oversight dashboards, configuration, user &amp; role management, and every module school-wide.</p></div></div>
+    <div class="portal"><span class="dot" style="background:#0D9488">T</span><div><h3>Teacher</h3><p class="muted">Take attendance, manage the gradebook, post assignments and message parents.</p></div></div>
+    <div class="portal"><span class="dot" style="background:#D97706">S</span><div><h3>Student</h3><p class="muted">Timetable, homework, grades, attendance, study material and announcements.</p></div></div>
+    <div class="portal"><span class="dot" style="background:#DB2777">P</span><div><h3>Parent</h3><p class="muted">Child's grades, attendance and fees (pay online), live bus tracking and teacher chat.</p></div></div>
+  </div>
+
+  <div class="band" style="margin-top:8mm">
+    <div class="eyebrow" style="color:rgba(255,255,255,.85)">Web-first &amp; responsive</div>
+    <h2 style="font-size:18pt">Works beautifully on a parent's phone browser.</h2>
+    <p style="color:rgba(255,255,255,.9);margin-top:2mm">No app install required. WhatsApp is the primary parent channel, with SMS and email built in.</p>
+  </div>
+  <div class="foot"><span>Illusio SMS · Product Brochure 2026</span><span>03</span></div>
+</section>
+
+<!-- ============ MODULES ============ -->
+<section class="page">
+  <div class="eyebrow">The modules</div>
+  <h2>15+ modules, one login.</h2>
+  <div class="rule"></div>
+  <div class="grid3" style="gap:4mm">
+    __MODULES__
+  </div>
+  <div class="foot"><span>Illusio SMS · Product Brochure 2026</span><span>04</span></div>
+</section>
+
+<!-- ============ HIGHLIGHTS ============ -->
+<section class="page">
+  <div class="eyebrow">What sets Illusio apart</div>
+  <h2>Highlights.</h2>
+  <div class="rule"></div>
+
+  <div class="hi"><span class="hn" style="background:#16A34A">₹</span><div><h3>Online fees with Razorpay</h3><p class="muted">Invoices, installments and digital receipts. Parents pay in seconds via UPI, cards, net banking or wallets — with automated WhatsApp/SMS reminders.</p></div></div>
+  <div class="hi"><span class="hn" style="background:#4F46E5">◉</span><div><h3>Live bus tracking</h3><p class="muted">Parents follow their child's bus in real time on a live GPS map, with route timeline, ETA to their stop and one-tap driver contact.</p></div></div>
+  <div class="hi"><span class="hn" style="background:#7C3AED">◆</span><div><h3>Analytics &amp; AI</h3><p class="muted">Dashboards, performance trends and AI-assisted early intervention that flags at-risk students — privacy-first, with no profiling.</p></div></div>
+  <div class="hi"><span class="hn" style="background:#0D9488">✓</span><div><h3>DPDP-compliant by design</h3><p class="muted">Verifiable parental consent, data localization in India, full audit logging and least-privilege access — built in, not bolted on.</p></div></div>
+  <div class="hi"><span class="hn" style="background:#D97706">◑</span><div><h3>Your brand, your colours</h3><p class="muted">Upload your school logo and the platform automatically adopts its colours across the whole app — a white-labelled experience.</p></div></div>
+  <div class="foot"><span>Illusio SMS · Product Brochure 2026</span><span>05</span></div>
+</section>
+
+<!-- ============ WHY / ROADMAP / CTA ============ -->
+<section class="page">
+  <div class="eyebrow">Rollout</div>
+  <h2>A phased path to launch.</h2>
+  <div class="rule"></div>
+  <div class="timeline">
+    <div class="ph"><div class="pn">PHASE 0</div><b>Foundation</b><span>Auth, RBAC, base schema, CI/CD</span></div>
+    <div class="ph"><div class="pn">PHASE 1</div><b>MVP</b><span>SIS, Attendance, Gradebook, Fees, Communication + portals</span></div>
+    <div class="ph"><div class="pn">PHASE 2</div><b>Expansion</b><span>Timetable, Library, Transport, LMS, analytics</span></div>
+    <div class="ph"><div class="pn">PHASE 3</div><b>Advanced</b><span>HR, Hostel, native apps, AI/predictive</span></div>
+  </div>
+
+  <div class="band" style="margin-top:12mm">
+    <div class="brandrow" style="margin-bottom:5mm">
+      <span class="mark" style="background:rgba(255,255,255,.16)">__MARK__</span>
+      <div><div class="wm" style="color:#fff">Illusio <span style="color:#fff">SMS</span></div><div class="tag" style="color:rgba(255,255,255,.8)">SCHOOL MANAGEMENT SYSTEM</div></div>
+    </div>
+    <h2 style="font-size:20pt">Ready to modernise your school?</h2>
+    <p style="color:rgba(255,255,255,.92);margin-top:2mm;max-width:150mm">Reduce administrative overhead, improve outcomes through early intervention,
+      and strengthen the school–parent relationship — on one reliable, privacy-first platform.</p>
+    <a class="cta">Book a demo →</a>
+    <p style="color:rgba(255,255,255,.85);margin-top:5mm;font-size:9pt">illusiodesigns@gmail.com · Illusio Public School, Pune, Maharashtra</p>
+  </div>
+  <div class="foot"><span>Illusio SMS · Product Brochure 2026</span><span>06</span></div>
+</section>
+
+</body>
+</html>
