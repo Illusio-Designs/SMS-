@@ -73,6 +73,12 @@ import {
   Image01Icon,
   PaintBoardIcon,
   CloudUploadIcon,
+  ComplaintIcon,
+  Album02Icon,
+  RestaurantTableIcon,
+  PackageSearchIcon,
+  UserCircleIcon,
+  TeachingIcon,
 } from '@hugeicons/core-free-icons'
 
 export const ICON = {
@@ -93,6 +99,12 @@ export const ICON = {
   communication: Message02Icon,
   settings: Settings02Icon,
   features: GridViewIcon,
+  studyMaterial: TeachingIcon,
+  infraction: ComplaintIcon,
+  gallery: Album02Icon,
+  foodMenu: RestaurantTableIcon,
+  lostFound: PackageSearchIcon,
+  account: UserCircleIcon,
 
   // roles
   admin: Shield01Icon,

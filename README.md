@@ -29,7 +29,19 @@ switcher (top bar + login), per-role grouped navigation and per-role dashboards.
 | **Analytics & AI** | admin | Trends, subject mastery, AI insights, at-risk detection |
 | **Communication** | all | Announcements, messages, calendar |
 | **Settings** | admin | **Branding (logo upload + accent-colour picker)**, school config, RBAC matrix, users, integrations |
+| **Calendar** | all | Events, exams, holidays and meetings grouped by month |
+| **Study Material** | all | Subject-wise notes, slides, worksheets, video lessons |
+| **Infractions** | all | Discipline records (students/parents see their own) |
+| **Food Menu** | all | Weekly canteen menu with today highlighted |
+| **Lost & Found** | all | Found-items registry with claim status |
+| **Gallery** | all | Event photo albums |
+| **My Account** | all | Profile, security (MFA/SSO), notification preferences |
 | **Login** | — | Portal picker, Google sign-in, MFA note |
+
+The parent/student portals use friendly labels (My Attendance, My Homework,
+My Time-Table, Issue/Return Book, Map View, Communicate) and the transport
+**Map View** embeds a **live GPS tracker** (IOPGPS device share link) with an
+open-in-new-tab fallback for trackers that block embedding.
 
 Admins **upload a school logo** in *Settings → Branding & Theme* and the app
 **automatically extracts the brand colours from the logo** (via canvas pixel

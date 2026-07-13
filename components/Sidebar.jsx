@@ -32,10 +32,11 @@ export default function Sidebar({ open, onNavigate }) {
             <div className="nav-group__label">{g.section}</div>
             {g.items.map((n) => {
               const active = pathname === n.href || pathname.startsWith(n.href + '/')
+              const label = (role === 'student' || role === 'parent') && n.myLabel ? n.myLabel : n.label
               return (
                 <Link key={n.href} href={n.href} className={active ? 'active' : ''} onClick={onNavigate}>
                   <span className="ico"><Glyph name={n.icon} size={18} strokeWidth={active ? 2 : 1.8} /></span>
-                  {n.label}
+                  {label}
                 </Link>
               )
             })}

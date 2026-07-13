@@ -59,13 +59,12 @@ function ParentTracking() {
   const stops = t.stops
   const homeIndex = stops.findIndex((s) => s.home)
 
-  // progress: 0 .. (stops.length - 1), fractional between stops. Animates live.
+  // progress: 0 .. (stops.length - 1), fractional between stops. Drives the
+  // route-timeline card and the ETA estimate alongside the live GPS map.
   const [progress, setProgress] = useState(0.4)
-  const [live, setLive] = useState(true)
   const raf = useRef(null)
 
   useEffect(() => {
-    if (!live) return
     let last = performance.now()
     const tick = (now) => {
       const dt = (now - last) / 1000
@@ -78,7 +77,7 @@ function ParentTracking() {
     }
     raf.current = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf.current)
-  }, [live, stops.length])
+  }, [stops.length])
 
   const passedHome = progress >= homeIndex
   const nextStopIndex = Math.min(Math.ceil(progress), stops.length - 1)
@@ -97,13 +96,13 @@ function ParentTracking() {
       </div>
 
       <div className="grid" style={{ gridTemplateColumns: '1.35fr 1fr' }}>
-        {/* Live map */}
-        <Card title="Live bus location" action={
-          <button className="btn sm" onClick={() => setLive((v) => !v)}>
-            <Glyph name={live ? 'clock' : 'route'} size={15} /> {live ? 'Pause' : 'Resume'}
-          </button>
+        {/* Live GPS tracker (real device) */}
+        <Card title="Live bus location" subtitle="Live GPS feed from the bus tracker" action={
+          <a className="btn sm" href={t.trackingUrl} target="_blank" rel="noopener noreferrer">
+            <Glyph name="location" size={15} /> Open full tracker
+          </a>
         }>
-          <LiveMap stops={stops} progress={progress} live={live} />
+          <LiveTracker url={t.trackingUrl} />
           <div className="between" style={{ marginTop: 14 }}>
             <Stat label="Driver" value={t.driver} />
             <Stat label="Contact" value={t.driverPhone} tone="blue" />
@@ -160,64 +159,83 @@ function ParentTracking() {
   )
 }
 
-/* Animated SVG map: bus moves along a poly-line of stops. */
-function LiveMap({ stops, progress, live }) {
-  // Fixed pseudo-geographic points for the route (percent coords).
-  const pts = [
-    [10, 78], [26, 60], [44, 66], [58, 42], [76, 50], [90, 22],
-  ].slice(0, stops.length)
-
-  const seg = Math.min(Math.floor(progress), pts.length - 2)
-  const frac = progress - seg
-  const [x1, y1] = pts[seg]
-  const [x2, y2] = pts[Math.min(seg + 1, pts.length - 1)]
-  const bx = x1 + (x2 - x1) * frac
-  const by = y1 + (y2 - y1) * frac
-
-  const path = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p[0]},${p[1]}`).join(' ')
-  const donePath = (() => {
-    const parts = [`M${pts[0][0]},${pts[0][1]}`]
-    for (let i = 1; i <= seg; i++) parts.push(`L${pts[i][0]},${pts[i][1]}`)
-    parts.push(`L${bx},${by}`)
-    return parts.join(' ')
-  })()
+/* Live GPS tracker (real device feed). Defaults to a launch panel that opens
+   the tracker; can attempt an inline embed for trackers that allow framing. */
+function LiveTracker({ url }) {
+  const [mode, setMode] = useState('launch') // 'launch' | 'embed'
+  const [loaded, setLoaded] = useState(false)
 
   return (
-    <div className="map-live">
-      <div className="map-grid" />
-      <svg viewBox="0 0 100 90" preserveAspectRatio="none" className="map-svg">
-        <path d={path} fill="none" stroke="var(--border)" strokeWidth="1.4" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-        <path d={donePath} fill="none" stroke="var(--accent)" strokeWidth="2.4" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-        {pts.map((p, i) => (
-          <circle key={i} cx={p[0]} cy={p[1]} r="1.4"
-            fill={stops[i].home ? 'var(--accent)' : progress >= i ? 'var(--green)' : 'var(--surface)'}
-            stroke={stops[i].home ? 'var(--accent)' : 'var(--text-faint)'} strokeWidth="0.8" vectorEffect="non-scaling-stroke" />
-        ))}
-      </svg>
-      {/* Bus marker positioned by percentage */}
-      <div className="bus-marker" style={{ left: `${bx}%`, top: `${(by / 90) * 100}%` }}>
-        <span className={`bus-pin ${live ? 'pulsing' : ''}`}><Glyph name="transport" size={18} color="#fff" /></span>
-      </div>
-      <div className="map-legend">
-        <span className={`live-dot ${live ? 'on' : ''}`} /> {live ? 'Live' : 'Paused'} · updating every few seconds
-      </div>
+    <div className="tracker">
+      {mode === 'launch' ? (
+        <div className="tracker-launch">
+          <div className="tl-map-bg" />
+          <div className="tl-radar"><Glyph name="transport" size={26} color="#fff" /></div>
+          <div className="tl-panel">
+            <div className="row" style={{ gap: 8, justifyContent: 'center' }}>
+              <span className="live-dot on" />
+              <b style={{ fontSize: 14 }}>Live GPS · IOPGPS</b>
+            </div>
+            <span className="muted" style={{ fontSize: 12.5, maxWidth: 320, textAlign: 'center' }}>
+              View your child’s bus live on the real-time map — position, speed and route updated from the on-board GPS device.
+            </span>
+            <a className="btn primary" href={url} target="_blank" rel="noopener noreferrer">
+              <Glyph name="location" size={16} /> Open live map
+            </a>
+            <button className="linkish" onClick={() => setMode('embed')}>or show it here ↧</button>
+          </div>
+        </div>
+      ) : (
+        <>
+          {!loaded && (
+            <div className="tracker-state">
+              <span className="spinner" />
+              <span className="muted" style={{ fontSize: 13 }}>Connecting to live GPS feed…</span>
+            </div>
+          )}
+          <iframe
+            src={url}
+            title="Live bus GPS tracker"
+            className="tracker-frame"
+            onLoad={() => setLoaded(true)}
+            allow="geolocation"
+            style={{ opacity: loaded ? 1 : 0 }}
+          />
+          <div className="tracker-bar">
+            <span className="row" style={{ gap: 7 }}><span className="live-dot on" /> Live GPS · IOPGPS</span>
+            <a className="tracker-link" href={url} target="_blank" rel="noopener noreferrer">
+              Not loading? Open live map <Glyph name="location" size={13} />
+            </a>
+          </div>
+        </>
+      )}
 
       <style jsx>{`
-        .map-live { position: relative; height: 250px; border-radius: 12px; overflow: hidden;
-          background: linear-gradient(135deg, #eef2ff, #e7f7ec); border: 1px solid var(--border); }
-        .map-grid { position: absolute; inset: 0; opacity: 0.5;
+        .tracker { position: relative; height: 320px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--surface-2); }
+        .tracker-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; transition: opacity 0.3s; }
+        .tracker-state { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 1; padding: 20px; }
+        .spinner { width: 30px; height: 30px; border-radius: 50%; border: 3px solid var(--border); border-top-color: var(--accent); animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .tracker-launch { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .tl-map-bg { position: absolute; inset: 0; background:
+          radial-gradient(circle at 30% 40%, rgba(79,70,229,0.12), transparent 45%),
+          linear-gradient(135deg, #eef2ff, #e7f7ec);
+          background-color: var(--surface-2); }
+        .tl-map-bg::after { content: ''; position: absolute; inset: 0; opacity: 0.45;
           background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
           background-size: 30px 30px; }
-        .map-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-        .bus-marker { position: absolute; transform: translate(-50%, -50%); transition: left 0.2s linear, top 0.2s linear; }
-        .bus-pin { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); display: grid; place-items: center;
-          box-shadow: 0 6px 16px rgba(79,70,229,0.45); }
-        .bus-pin.pulsing { animation: pulse 1.6s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(79,70,229,0.45); } 70% { box-shadow: 0 0 0 14px rgba(79,70,229,0); } 100% { box-shadow: 0 0 0 0 rgba(79,70,229,0); } }
-        .map-legend { position: absolute; bottom: 10px; left: 10px; background: var(--surface); padding: 6px 11px; border-radius: 8px;
-          font-size: 11.5px; font-weight: 600; box-shadow: var(--shadow); display: flex; align-items: center; gap: 7px; }
-        .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-faint); }
-        .live-dot.on { background: var(--green); animation: blink 1.2s infinite; }
+        .tl-radar { position: absolute; width: 52px; height: 52px; border-radius: 50%; background: var(--accent);
+          display: grid; place-items: center; box-shadow: 0 8px 22px rgba(79,70,229,0.4); animation: pulse 1.8s infinite; z-index: 1; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(79,70,229,0.4); } 70% { box-shadow: 0 0 0 22px rgba(79,70,229,0); } 100% { box-shadow: 0 0 0 0 rgba(79,70,229,0); } }
+        .tl-panel { position: absolute; bottom: 16px; left: 16px; right: 16px; background: var(--surface);
+          border-radius: 12px; padding: 16px; box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .linkish { border: none; background: none; color: var(--accent); font-weight: 600; font-size: 12.5px; }
+
+        .tracker-bar { position: absolute; bottom: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between;
+          gap: 8px; padding: 8px 12px; background: var(--surface); border-top: 1px solid var(--border); font-size: 11.5px; font-weight: 600; z-index: 1; }
+        .tracker-link { display: inline-flex; align-items: center; gap: 5px; color: var(--accent); }
+        .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: blink 1.2s infinite; }
         @keyframes blink { 50% { opacity: 0.3; } }
       `}</style>
     </div>

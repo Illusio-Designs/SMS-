@@ -26,6 +26,13 @@ const FEATURE_DESC = {
   '/analytics': 'Dashboards, trends and AI-assisted early intervention.',
   '/communication': 'Announcements, messaging and calendar over WhatsApp/SMS/email.',
   '/settings': 'School config, RBAC, users, branding and integrations.',
+  '/calendar': 'School events, exams, holidays and meetings.',
+  '/study-material': 'Notes, slides, worksheets and video lessons by subject.',
+  '/infractions': 'Discipline records and conduct notes.',
+  '/food-menu': 'Weekly canteen / mess menu.',
+  '/lost-found': 'Items found around campus and their claim status.',
+  '/gallery': 'Photo albums from events and activities.',
+  '/account': 'Profile, preferences and account security.',
 }
 
 const ROLE_TONE = { admin: 'accent', teacher: 'teal', student: 'amber', parent: 'pink' }
