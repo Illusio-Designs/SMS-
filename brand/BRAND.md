@@ -1,4 +1,7 @@
-# Illusio SMS — Brand Guide
+# Scholr — Brand Guide
+
+**Scholr** — School Management System, *by Illusio*.
+
 
 ## Logo
 - **Full logo:** [`public/brand/logo-full.svg`](../public/brand/logo-full.svg) — mark + wordmark + tagline

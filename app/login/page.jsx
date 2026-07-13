@@ -29,7 +29,7 @@ export default function LoginPage() {
             {logo ? <img src={logo} alt="School logo" /> : <BrandGlyph size={28} />}
           </span>
           <div>
-            <b>Illusio SMS</b>
+            <b>Scholr <span style={{ fontWeight: 500, color: 'var(--text-faint)', fontSize: 12 }}>by Illusio</span></b>
             <div className="muted" style={{ fontSize: 12.5 }}>{school.name} · {school.board}</div>
           </div>
         </div>

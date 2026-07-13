@@ -1,6 +1,6 @@
 'use client'
 
-// Illusio SMS brand mark. `BrandGlyph` is the white mortarboard for use inside
+// Scholr (by Illusio) brand mark. `BrandGlyph` is the white mortarboard for use inside
 // the themed gradient containers (sidebar/login). `BrandMark` is the full
 // self-contained badge (fixed brand colours) for standalone use.
 
@@ -18,7 +18,7 @@ export function BrandGlyph({ size = 22 }) {
 
 export function BrandMark({ size = 44, radius = 12 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Illusio SMS">
+    <svg width={size} height={size} viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Scholr">
       <defs>
         <linearGradient id="bm-g" x1="40" y1="40" x2="472" y2="472" gradientUnits="userSpaceOnUse">
           <stop stopColor="#4F46E5" />

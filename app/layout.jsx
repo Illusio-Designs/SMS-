@@ -2,9 +2,9 @@ import './globals.css'
 import { AppProvider } from '@/components/AppContext'
 
 export const metadata = {
-  title: 'Illusio School Management System',
+  title: 'Scholr — School Management System by Illusio',
   description:
-    'Web-first School Management System for a single school in India — frontend demo with mock data.',
+    'Scholr — a web-first School Management System for a single school in India. Frontend demo with mock data.',
 }
 
 export default function RootLayout({ children }) {

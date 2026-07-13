@@ -36,7 +36,7 @@ export default function Sidebar({ open, onNavigate }) {
             : <BrandGlyph size={22} />}
         </span>
         <span>
-          Illusio SMS
+          Scholr
           <small>{school.name}</small>
         </span>
       </div>

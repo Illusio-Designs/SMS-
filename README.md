@@ -1,4 +1,4 @@
-# Illusio School Management System — Frontend
+# Scholr — School Management System (by Illusio)
 
 A **web-first, full-featured** School Management System frontend for a single
 school in India, built to the [PRD](./PRD-School-Management-System.md) with
@@ -120,7 +120,7 @@ lib/
 
 ## Brand assets
 
-A full brand identity for **Illusio SMS** lives in [`brand/`](./brand) and
+A full brand identity for **Scholr** lives in [`brand/`](./brand) and
 [`public/brand/`](./public/brand):
 
 - **Logo** — `public/brand/logo-full.svg` (mark + wordmark), `logo-mark.svg`
