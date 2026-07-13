@@ -1,7 +1,7 @@
 'use client'
 
 import { useApp } from '@/components/AppContext'
-import { PageHeader, Card, Badge, Kpi, Button, Table, Bar } from '@/components/ui'
+import { PageHeader, Card, Badge, Kpi, Button, Table, Bar, RowActions } from '@/components/ui'
 import { assignments, myAssignments } from '@/lib/mockData'
 
 export default function AssignmentsPage() {
@@ -44,6 +44,7 @@ function TeacherAssignments() {
               </div>
             ) },
             { key: 'status', label: 'Status', render: (r) => <Badge>{r.status}</Badge> },
+            { key: 'act', label: '', align: 'right', render: (r) => <RowActions label={r.title} /> },
           ]}
           rows={assignments}
         />
@@ -71,7 +72,8 @@ function StudentAssignments() {
             { key: 'due', label: 'Due date' },
             { key: 'grade', label: 'Grade', render: (r) => <span className="mono">{r.grade}</span> },
             { key: 'status', label: 'Status', render: (r) => <Badge>{r.status}</Badge> },
-            { key: 'act', label: '', align: 'right', render: (r) => r.status === 'Pending' ? <Button size="sm" variant="primary">Submit</Button> : <Button size="sm">View</Button> },
+            { key: 'submit', label: '', align: 'right', render: (r) => r.status === 'Pending' ? <Button size="sm" variant="primary">Submit</Button> : null },
+            { key: 'act', label: '', align: 'right', render: (r) => <RowActions label={r.title} /> },
           ]}
           rows={myAssignments}
         />

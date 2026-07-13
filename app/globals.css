@@ -269,6 +269,29 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 .modal-scrim { position: fixed; inset: 0; background: rgba(15,18,40,0.5); display: grid; place-items: center; z-index: 60; padding: 20px; }
 .modal { width: 100%; background: var(--surface); border-radius: 16px; padding: 22px; box-shadow: var(--shadow-lg); max-height: 90vh; overflow-y: auto; }
 
+/* ---------- Row actions (View / Update / Download) ---------- */
+.row-actions { display: inline-flex; gap: 4px; justify-content: flex-end; }
+.ra-btn {
+  width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text-soft); display: grid; place-items: center;
+  transition: background 0.14s, color 0.14s, border-color 0.14s;
+}
+.ra-btn:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+/* ---------- Toasts ---------- */
+.toaster { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 80; }
+.toast {
+  display: flex; align-items: center; gap: 8px; background: var(--surface);
+  border: 1px solid var(--border); border-left: 3px solid var(--accent);
+  box-shadow: var(--shadow-lg); padding: 10px 14px; border-radius: 10px;
+  font-size: 13px; font-weight: 600; animation: toastin 0.2s ease;
+}
+.toast--green { border-left-color: var(--green); color: var(--green); }
+.toast--red { border-left-color: var(--red); color: var(--red); }
+.toast--amber { border-left-color: var(--amber); color: var(--amber); }
+.toast--blue { border-left-color: var(--blue); color: var(--blue); }
+@keyframes toastin { from { opacity: 0; transform: translateY(8px); } }
+
 /* ---------- Misc ---------- */
 .avatar-sm {
   width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;

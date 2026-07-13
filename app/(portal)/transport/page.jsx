@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useApp } from '@/components/AppContext'
-import { PageHeader, Card, Badge, Kpi, Button, Table, Bar, Glyph, Icon, Stat } from '@/components/ui'
+import { PageHeader, Card, Badge, Kpi, Button, Table, Bar, Glyph, Icon, Stat, RowActions } from '@/components/ui'
 import { transportSummary, busRoutes, myTransport } from '@/lib/mockData'
 
 export default function TransportPage() {
@@ -45,6 +45,7 @@ function AdminTransport() {
             ) },
             { key: 'eta', label: 'ETA', render: (r) => <span className="mono">{r.eta}</span> },
             { key: 'status', label: 'Status', render: (r) => <Badge>{r.status}</Badge> },
+            { key: 'act', label: '', align: 'right', render: (r) => <RowActions label={r.name} /> },
           ]}
           rows={busRoutes}
         />

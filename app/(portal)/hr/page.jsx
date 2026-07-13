@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { PageHeader, Card, Badge, Kpi, Button, Table, Tabs, Avatar, inr } from '@/components/ui'
+import { PageHeader, Card, Badge, Kpi, Button, Table, Tabs, Avatar, inr, RowActions } from '@/components/ui'
 import { hrSummary, staff, payrollRuns } from '@/lib/mockData'
 
 export default function HrPage() {
@@ -36,6 +36,7 @@ export default function HrPage() {
               { key: 'attendance', label: 'Attendance', align: 'right', render: (r) => <span className="mono">{r.attendance}%</span> },
               { key: 'salary', label: 'Salary', align: 'right', render: (r) => <span className="mono">{inr(r.salary)}</span> },
               { key: 'status', label: 'Status', render: (r) => <Badge>{r.status}</Badge> },
+              { key: 'act', label: '', align: 'right', render: (r) => <RowActions label={r.name} /> },
             ]}
             rows={staff}
           />
@@ -52,7 +53,8 @@ export default function HrPage() {
               { key: 'deductions', label: 'Deductions', align: 'right', render: (r) => <span className="mono">{inr(r.deductions)}</span> },
               { key: 'net', label: 'Net payable', align: 'right', render: (r) => <span className="mono"><b>{inr(r.net)}</b></span> },
               { key: 'status', label: 'Status', render: (r) => <Badge>{r.status}</Badge> },
-              { key: 'act', label: '', align: 'right', render: (r) => r.status === 'Draft' ? <Button size="sm" variant="primary">Process</Button> : <Button size="sm">Payslips</Button> },
+              { key: 'proc', label: '', align: 'right', render: (r) => r.status === 'Draft' ? <Button size="sm" variant="primary">Process</Button> : null },
+              { key: 'act', label: '', align: 'right', render: (r) => <RowActions label={`${r.month} payroll`} /> },
             ]}
             rows={payrollRuns}
           />

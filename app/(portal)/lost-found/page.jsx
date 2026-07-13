@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { PageHeader, Card, Badge, Kpi, Button, Table, Icon } from '@/components/ui'
+import { PageHeader, Card, Badge, Kpi, Button, Table, Icon, RowActions } from '@/components/ui'
 import { lostFound } from '@/lib/mockData'
 
 const CAT_ICON = { Personal: 'backpack', Books: 'book', Clothing: 'backpack', Valuables: 'award' }
@@ -39,7 +39,8 @@ export default function LostFoundPage() {
             { key: 'foundAt', label: 'Found at' },
             { key: 'date', label: 'Date' },
             { key: 'status', label: 'Status', render: (r) => <Badge tone={r.status === 'Claimed' ? 'green' : 'amber'}>{r.status}</Badge> },
-            { key: 'act', label: '', align: 'right', render: (r) => r.status === 'Unclaimed' ? <Button size="sm" onClick={() => claim(r.id)}>Claim</Button> : <span className="faint">—</span> },
+            { key: 'claim', label: '', align: 'right', render: (r) => r.status === 'Unclaimed' ? <Button size="sm" onClick={() => claim(r.id)}>Claim</Button> : <span className="faint">—</span> },
+            { key: 'act', label: '', align: 'right', render: (r) => <RowActions label={r.item} /> },
           ]}
           rows={rows}
         />

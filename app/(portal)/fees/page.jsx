@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useApp } from '@/components/AppContext'
-import { Card, Badge, Kpi, Bar, inr } from '@/components/ui'
+import { Card, Badge, Kpi, Bar, inr, RowActions } from '@/components/ui'
 import { invoices, feeStructure, feeSummary } from '@/lib/mockData'
 
 export default function FeesPage() {
@@ -54,7 +54,7 @@ function AdminFees() {
         bodyClass="tight">
         <div className="table-wrap">
           <table className="tbl">
-            <thead><tr><th>Invoice</th><th>Student</th><th>Class</th><th className="num">Amount</th><th className="num">Paid</th><th className="num">Due</th><th>Method</th><th>Status</th></tr></thead>
+            <thead><tr><th>Invoice</th><th>Student</th><th>Class</th><th className="num">Amount</th><th className="num">Paid</th><th className="num">Due</th><th>Method</th><th>Status</th><th></th></tr></thead>
             <tbody>
               {invoices.map((i) => (
                 <tr key={i.id}>
@@ -66,6 +66,7 @@ function AdminFees() {
                   <td className="num mono" style={{ color: i.due ? 'var(--red)' : 'inherit' }}>{inr(i.due)}</td>
                   <td className="muted" style={{ fontSize: 12.5 }}>{i.method}</td>
                   <td><Badge>{i.status}</Badge></td>
+                  <td className="num"><RowActions label={`invoice ${i.id}`} /></td>
                 </tr>
               ))}
             </tbody>

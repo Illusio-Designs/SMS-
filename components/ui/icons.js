@@ -79,6 +79,8 @@ import {
   PackageSearchIcon,
   UserCircleIcon,
   TeachingIcon,
+  ViewIcon,
+  MoreVerticalIcon,
 } from '@hugeicons/core-free-icons'
 
 export const ICON = {
@@ -105,6 +107,8 @@ export const ICON = {
   foodMenu: RestaurantTableIcon,
   lostFound: PackageSearchIcon,
   account: UserCircleIcon,
+  view: ViewIcon,
+  more: MoreVerticalIcon,
 
   // roles
   admin: Shield01Icon,

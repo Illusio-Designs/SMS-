@@ -1,7 +1,7 @@
 'use client'
 
 import { useApp } from '@/components/AppContext'
-import { PageHeader, Card, Badge, Kpi, Button, Table } from '@/components/ui'
+import { PageHeader, Card, Badge, Kpi, Button, Table, RowActions } from '@/components/ui'
 import { infractions, infractionSummary } from '@/lib/mockData'
 
 export default function InfractionsPage() {
@@ -36,6 +36,7 @@ export default function InfractionsPage() {
             { key: 'points', label: 'Points', align: 'right', render: (r) => <span className="mono">{r.points}</span> },
             { key: 'by', label: 'Logged by', render: (r) => <span className="muted">{r.by}</span> },
             { key: 'status', label: 'Status', render: (r) => <Badge tone={r.status === 'Resolved' ? 'green' : 'amber'}>{r.status}</Badge> },
+            { key: 'act', label: '', align: 'right', render: (r) => <RowActions label={`${r.type} record`} /> },
           ]}
           rows={rows}
           empty="No infractions recorded — clean record."

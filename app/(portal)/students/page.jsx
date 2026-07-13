@@ -2,10 +2,12 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Card, Badge } from '@/components/ui'
+import { useRouter } from 'next/navigation'
+import { Card, Badge, RowActions } from '@/components/ui'
 import { students } from '@/lib/mockData'
 
 export default function StudentsPage() {
+  const router = useRouter()
   const [q, setQ] = useState('')
   const [grade, setGrade] = useState('All')
 
@@ -71,7 +73,7 @@ export default function StudentsPage() {
                   <td><Badge tone="gray">{s.avgGrade}</Badge></td>
                   <td><Badge>{s.feeStatus}</Badge></td>
                   <td><Badge>{s.status}</Badge></td>
-                  <td className="right"><Link className="btn sm" href={`/students/${s.id}`}>View</Link></td>
+                  <td className="right"><RowActions label={s.name} onView={() => router.push(`/students/${s.id}`)} /></td>
                 </tr>
               ))}
               {rows.length === 0 && (

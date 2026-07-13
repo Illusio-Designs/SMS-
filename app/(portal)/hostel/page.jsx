@@ -1,6 +1,6 @@
 'use client'
 
-import { PageHeader, Card, Badge, Kpi, Button, Table, Bar, Glyph } from '@/components/ui'
+import { PageHeader, Card, Badge, Kpi, Button, Table, Bar, Glyph, RowActions } from '@/components/ui'
 import { hostelSummary, hostelRooms, messMenu } from '@/lib/mockData'
 
 export default function HostelPage() {
@@ -35,6 +35,7 @@ export default function HostelPage() {
               ) },
               { key: 'warden', label: 'Warden' },
               { key: 'status', label: 'Status', render: (r) => <Badge>{r.status}</Badge> },
+              { key: 'act', label: '', align: 'right', render: (r) => <RowActions label={`room ${r.room}`} /> },
             ]}
             rows={hostelRooms}
           />

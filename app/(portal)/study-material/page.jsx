@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useApp } from '@/components/AppContext'
-import { PageHeader, Card, Badge, Kpi, Button, Table, Icon, SearchInput } from '@/components/ui'
+import { PageHeader, Card, Badge, Kpi, Button, Table, Icon, SearchInput, RowActions } from '@/components/ui'
 import { studyMaterials, subjects } from '@/lib/mockData'
 
 const TYPE_TONE = { PDF: 'red', PPT: 'amber', DOC: 'blue', Video: 'violet' }
@@ -48,7 +48,7 @@ export default function StudyMaterialPage() {
             { key: 'type', label: 'Type', render: (r) => <Badge tone={TYPE_TONE[r.type]}>{r.type}</Badge> },
             { key: 'size', label: 'Size', render: (r) => <span className="muted">{r.size}</span> },
             { key: 'uploaded', label: 'Uploaded' },
-            { key: 'act', label: '', align: 'right', render: () => <Button size="sm" icon="download">Download</Button> },
+            { key: 'act', label: '', align: 'right', render: (r) => <RowActions label={r.title} /> },
           ]}
           rows={rows}
           empty="No study material for this filter."

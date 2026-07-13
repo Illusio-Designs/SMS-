@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
+import { Toaster } from './ui'
 
 export default function PortalShell({ children }) {
   const [open, setOpen] = useState(false)
@@ -14,6 +15,7 @@ export default function PortalShell({ children }) {
         <Topbar onMenu={() => setOpen((v) => !v)} />
         {children}
       </div>
+      <Toaster />
     </div>
   )
 }

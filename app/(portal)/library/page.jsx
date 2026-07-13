@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useApp } from '@/components/AppContext'
-import { PageHeader, Card, Badge, Kpi, Button, Table, SearchInput, Tabs } from '@/components/ui'
+import { PageHeader, Card, Badge, Kpi, Button, Table, SearchInput, Tabs, RowActions } from '@/components/ui'
 import { librarySummary, libraryCatalog, libraryIssued } from '@/lib/mockData'
 
 export default function LibraryPage() {
@@ -46,7 +46,8 @@ export default function LibraryPage() {
               { key: 'category', label: 'Category', render: (r) => <Badge tone="gray">{r.category}</Badge> },
               { key: 'copies', label: 'Copies', align: 'right', render: (r) => <span className="mono">{r.available}/{r.copies}</span> },
               { key: 'status', label: 'Status', render: (r) => <Badge>{r.status}</Badge> },
-              { key: 'act', label: '', align: 'right', render: (r) => staff && <Button size="sm" disabled={r.available === 0}>Issue</Button> },
+              { key: 'issue', label: '', align: 'right', render: (r) => staff ? <Button size="sm" disabled={r.available === 0}>Issue</Button> : null },
+              { key: 'act', label: '', align: 'right', render: (r) => <RowActions label={r.title} /> },
             ]}
             rows={catalog}
             empty="No books match your search."
@@ -62,7 +63,8 @@ export default function LibraryPage() {
               { key: 'issued', label: 'Issued' },
               { key: 'due', label: 'Due', render: (r) => <span style={{ color: r.status === 'Overdue' ? 'var(--red)' : 'inherit' }}>{r.due}</span> },
               { key: 'status', label: 'Status', render: (r) => <Badge>{r.status}</Badge> },
-              { key: 'act', label: '', align: 'right', render: (r) => staff && r.status !== 'Returned' && <Button size="sm">Return</Button> },
+              { key: 'return', label: '', align: 'right', render: (r) => staff && r.status !== 'Returned' ? <Button size="sm">Return</Button> : null },
+              { key: 'act', label: '', align: 'right', render: (r) => <RowActions label={r.book} /> },
             ]}
             rows={libraryIssued}
           />
