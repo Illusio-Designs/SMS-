@@ -1,33 +1,34 @@
 import { Router } from 'express'
 import bcrypt from 'bcryptjs'
-import { queryOne } from '../config/db.js'
+import { master, tenantPool, get } from '../config/db.js'
+import { resolveTenantForLogin } from '../lib/tenants.js'
 import { asyncHandler, ApiError, signToken, ok } from '../utils/helpers.js'
 import { authenticate } from '../middleware/index.js'
 
 const router = Router()
 
-// --- Tenant user login (requires a school code) ---
-// POST /api/auth/login  { schoolCode, email, password }
+// --- Tenant user login ---
+// Resolve the tenant by the request domain (Host header) or an explicit
+// schoolCode, then authenticate against THAT tenant's own database.
+// POST /api/auth/login  { email, password, schoolCode? }
 router.post('/login', asyncHandler(async (req, res) => {
-  const { schoolCode, email, password } = req.body || {}
-  if (!schoolCode || !email || !password) throw new ApiError(400, 'schoolCode, email and password are required')
+  const { email, password, schoolCode } = req.body || {}
+  if (!email || !password) throw new ApiError(400, 'email and password are required')
 
-  const school = await queryOne('SELECT id, name, code, status, primary_color, logo_url FROM schools WHERE code = :code', { code: schoolCode })
-  if (!school) throw new ApiError(404, 'Unknown school code')
-  if (school.status !== 'active') throw new ApiError(403, 'This school is suspended')
+  const tenant = await resolveTenantForLogin({ schoolCode, host: req.headers.host })
+  if (!tenant) throw new ApiError(404, 'Unknown school — send schoolCode or use the school domain')
+  if (tenant.status !== 'active') throw new ApiError(403, 'This school is suspended')
 
-  const user = await queryOne(
-    'SELECT id, role, name, email, password_hash, status, student_id FROM users WHERE school_id = :sid AND email = :email',
-    { sid: school.id, email }
-  )
+  const pool = tenantPool(tenant.db_name)
+  const user = await get(pool, 'SELECT id, role, name, email, password_hash, status, student_id FROM users WHERE email = :email', { email })
   if (!user || user.status !== 'active') throw new ApiError(401, 'Invalid credentials')
   if (!bcrypt.compareSync(password, user.password_hash)) throw new ApiError(401, 'Invalid credentials')
 
-  const token = signToken({ kind: 'tenant', sub: user.id, schoolId: school.id, role: user.role, email: user.email })
+  const token = signToken({ kind: 'tenant', sub: user.id, tenantId: tenant.id, dbName: tenant.db_name, code: tenant.code, role: user.role, email: user.email })
   ok(res, {
     token,
     user: { id: user.id, name: user.name, email: user.email, role: user.role, studentId: user.student_id },
-    school: { id: school.id, name: school.name, code: school.code, primaryColor: school.primary_color, logoUrl: school.logo_url },
+    school: { id: tenant.id, name: tenant.name, code: tenant.code, domain: tenant.domain, primaryColor: tenant.primary_color, logoUrl: tenant.logo_url },
   })
 }))
 
@@ -37,7 +38,7 @@ router.post('/platform/login', asyncHandler(async (req, res) => {
   const { email, password } = req.body || {}
   if (!email || !password) throw new ApiError(400, 'email and password are required')
 
-  const admin = await queryOne('SELECT id, name, email, password_hash, status FROM platform_admins WHERE email = :email', { email })
+  const admin = await master.get('SELECT id, name, email, password_hash, status FROM platform_admins WHERE email = :email', { email })
   if (!admin || admin.status !== 'active') throw new ApiError(401, 'Invalid credentials')
   if (!bcrypt.compareSync(password, admin.password_hash)) throw new ApiError(401, 'Invalid credentials')
 
@@ -45,9 +46,6 @@ router.post('/platform/login', asyncHandler(async (req, res) => {
   ok(res, { token, admin: { id: admin.id, name: admin.name, email: admin.email } })
 }))
 
-// --- Who am I ---
-router.get('/me', authenticate, asyncHandler(async (req, res) => {
-  ok(res, { auth: req.auth })
-}))
+router.get('/me', authenticate, asyncHandler(async (req, res) => ok(res, { auth: req.auth })))
 
 export default router

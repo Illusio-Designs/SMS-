@@ -2,105 +2,114 @@
 
 Multi-tenant School Management System API. **Node.js (Express) + MySQL.**
 
-## Tenancy model — admin-managed, not subscription-based
+## Tenancy model — database-per-tenant, admin-managed
 
-- **Shared database, `school_id` discriminator.** Every tenant table carries a
-  `school_id`; every query is filtered by it, so one school can never see
-  another's data. Deleting a school cascades to all its rows.
-- **A platform super-admin provisions and manages tenants** (create a school,
-  update it, **suspend / re-activate**, delete). There is **no subscription or
-  billing** — a school is simply `active` or `suspended`, toggled by the admin.
-- **Tenant users** (admin / staff / teacher / student / parent) log in with their
-  **school code** + email + password and are pinned to their `school_id` by the
-  JWT. A suspended school blocks all its users' access.
+- **Each school gets its OWN database** (`scholr_t_<code>`). A small **master
+  database** (`scholr_master`) holds only the tenant registry + platform
+  super-admins. Isolation is **physical** — a tenant connection can only ever
+  touch that tenant's database.
+- **Resolved by domain.** A tenant has a `domain` (e.g. `greenwood.scholr.app`);
+  login resolves the tenant from the request `Host` header (or an explicit
+  `schoolCode`), then connects to that tenant's database. A per-tenant
+  connection pool is created lazily and cached.
+- **Admin-managed, not subscription-based.** A platform super-admin provisions a
+  tenant (creates its database + schema + first admin), can update it, **suspend
+  / re-activate** it, or delete it (drops the whole database). No plans, no billing.
 
 ```
-Platform super-admin ──manages──▶ Schools (tenants)
-                                     └─ users, students, attendance, fees … (isolated by school_id)
+                 ┌─────────────── master DB (scholr_master) ───────────────┐
+Super-admin ────▶│  tenants (name, code, domain, db_name, status, …)       │
+                 │  platform_admins                                        │
+                 └─────────────────────────────────────────────────────────┘
+                          │ provisions / drops
+        ┌─────────────────┼───────────────────────┐
+   scholr_t_greenwood   scholr_t_riverside   scholr_t_<code>   ← one DB per school
+   (users, students, attendance, fee_invoices, classes …)
 ```
 
-## Quick start
+## Quick start (no Docker)
+
+Requires a running **MySQL 8 / MariaDB** you can create databases on.
 
 ```bash
 cd backend
-cp .env.example .env
+cp .env.example .env          # point DB_* at your MySQL server
 npm install
 
-# 1) Start MySQL (Docker) — or point .env at your own MySQL 8
-docker compose up -d
-
-# 2) Create schema + seed a super-admin and two demo tenants
-npm run db:migrate
-npm run db:seed
-
-# 3) Run the API
-npm run dev          # http://localhost:4000/health
+npm run db:migrate            # creates the master DB + registry tables
+npm run db:seed               # super-admin + 2 demo tenants (each its own DB)
+npm run dev                   # http://localhost:4000/health
 ```
 
-Reset everything: `npm run db:reset` (drops + recreates + reseeds).
+Reset everything (drops master **and every** `scholr_t_*` tenant DB, then reseeds):
+```bash
+npm run db:reset
+```
 
 ### Seeded credentials
 | Who | Login |
 |---|---|
-| Platform super-admin | `superadmin@scholr.app` / `admin1234` (via `/api/auth/platform/login`) |
-| School admin (tenant `greenwood`) | code `greenwood`, `admin@greenwood.edu.in` / `demo1234` |
+| Platform super-admin | `superadmin@scholr.app` / `admin1234` → `POST /api/auth/platform/login` |
+| Greenwood admin | domain `greenwood.scholr.app` **or** `schoolCode: greenwood`, `admin@greenwood.edu.in` / `demo1234` |
 | Teacher / Student / Parent | `teacher@…`, `student@…`, `parent@greenwood.edu.in` / `demo1234` |
-| Second tenant | code `riverside`, `admin@riverside.edu.in` / `demo1234` |
+| Riverside | `riverside.scholr.app` / code `riverside`, `admin@riverside.edu.in` / `demo1234` |
 
 ## API
 
-Auth: send `Authorization: Bearer <token>`.
+Send `Authorization: Bearer <token>`.
 
 ### Auth
 | Method | Path | Body |
 |---|---|---|
-| POST | `/api/auth/login` | `{ schoolCode, email, password }` → tenant token |
-| POST | `/api/auth/platform/login` | `{ email, password }` → super-admin token |
+| POST | `/api/auth/login` | `{ email, password, schoolCode? }` — tenant resolved by `Host` domain or `schoolCode` |
+| POST | `/api/auth/platform/login` | `{ email, password }` |
 | GET | `/api/auth/me` | — |
 
-### Platform (super-admin only) — tenant management
+### Platform (super-admin) — tenant management
 | Method | Path | Purpose |
 |---|---|---|
-| GET | `/api/platform/schools` | List all tenants (+ counts) |
-| POST | `/api/platform/schools` | Provision a school **and its first admin** |
-| GET | `/api/platform/schools/:id` | Tenant detail |
-| PATCH | `/api/platform/schools/:id` | Update name/board/city/colour/logo |
+| GET | `/api/platform/schools` | List tenants (+ live counts per DB) |
+| POST | `/api/platform/schools` | **Provision** a tenant (new DB + schema + first admin) |
+| GET | `/api/platform/schools/:id` | Detail |
+| PATCH | `/api/platform/schools/:id` | Update name / domain / board / colour / logo |
 | POST | `/api/platform/schools/:id/status` | `{ status: active \| suspended }` |
-| DELETE | `/api/platform/schools/:id` | Delete tenant + all data |
+| DELETE | `/api/platform/schools/:id` | **Drop** the tenant's database |
 
-### Tenant-scoped (auto-isolated by `school_id`)
+### Tenant-scoped (run against the tenant's own DB)
 | Method | Path | Notes |
 |---|---|---|
 | GET/POST/PATCH/DELETE | `/api/students` | roster + records |
-| GET/POST | `/api/attendance` | `POST { date, records:[{studentId,status}] }` (upsert) |
-| GET | `/api/attendance/summary` | per-student % |
-| GET | `/api/fees` · `/api/fees/summary` | parents see only their child |
+| GET/POST | `/api/attendance` (+`/summary`) | `POST { date, records:[{studentId,status}] }` |
+| GET | `/api/fees` (+`/summary`) | students see only their own |
 | POST | `/api/fees/:id/pay` | `{ amount, method }` |
-| GET/POST | `/api/users` | school admin manages tenant users |
+| GET/POST | `/api/users` | admin manages tenant users |
 
-> A super-admin can act **inside** a tenant by adding an `X-School-Id: <id>`
-> header to tenant-scoped calls.
+> A super-admin can operate inside a tenant by adding `X-Tenant: <code or domain>`.
 
-## Example
+## Example — provision a tenant, then use it
 
 ```bash
-# super-admin creates a new school + its admin
+# 1) super-admin provisions a new school (creates its own database)
 curl -X POST localhost:4000/api/platform/schools \
   -H "Authorization: Bearer $SUPER" -H 'Content-Type: application/json' \
-  -d '{"name":"Sunrise Academy","code":"sunrise","adminEmail":"admin@sunrise.edu.in","adminPassword":"demo1234"}'
+  -d '{"name":"Sunrise Academy","code":"sunrise","domain":"sunrise.scholr.app",
+       "adminEmail":"admin@sunrise.edu.in","adminPassword":"demo1234"}'
 
-# that school's admin logs in and lists students (only their tenant's)
+# 2) that school's admin logs in by domain (Host) or schoolCode
 curl -X POST localhost:4000/api/auth/login -H 'Content-Type: application/json' \
-  -d '{"schoolCode":"sunrise","email":"admin@sunrise.edu.in","password":"demo1234"}'
+  -H 'Host: sunrise.scholr.app' -d '{"email":"admin@sunrise.edu.in","password":"demo1234"}'
+
+# 3) all subsequent calls hit ONLY sunrise's database
 curl localhost:4000/api/students -H "Authorization: Bearer $TENANT"
 ```
 
 ## Layout
 ```
 src/
-  config/     env.js, db.js (mysql2 pool)
-  db/         schema.sql, migrate.js, seed.js
-  middleware/ authenticate · requirePlatform · resolveTenant · requireRole · errorHandler
+  config/     env.js · db.js (master pool + per-tenant pool cache + raw conn)
+  db/         master.sql · tenant.sql · migrate.js · seed.js
+  lib/        tenants.js (provision / drop / resolve-by-domain)
+  middleware/ authenticate · requirePlatform · resolveTenant (attaches req.db) · requireRole
   modules/    auth · platform · students · attendance · fees · users
   app.js server.js
 ```

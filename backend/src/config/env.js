@@ -9,7 +9,10 @@ export const env = {
     port: Number(process.env.DB_PORT || 3306),
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || 'scholr',
-    database: process.env.DB_NAME || 'scholr',
+    // Control-plane database (tenant registry + super-admins).
+    masterName: process.env.DB_MASTER_NAME || 'scholr_master',
+    // Per-tenant databases are named `${tenantPrefix}${code}`.
+    tenantPrefix: process.env.TENANT_DB_PREFIX || 'scholr_t_',
   },
   jwt: {
     secret: process.env.JWT_SECRET || 'change-me-in-production',
